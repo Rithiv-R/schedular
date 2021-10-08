@@ -33,6 +33,17 @@ class _MySlotState extends State<MySlot> {
   String id = '';
   String slot = '';
   void different() async {
+    var id1 = '2' +
+        id.substring(
+          1,
+        );
+    var id2 = '2' +
+        id.substring(1, 3) +
+        (int.parse(id.substring(
+                  3,
+                )) +
+                1)
+            .toString();
     await FirebaseFirestore.instance
         .collection('faculties')
         .get()
@@ -42,7 +53,9 @@ class _MySlotState extends State<MySlot> {
         if (subjects.contains('CSI1007')) {
         } else {
           var slots = element['slots'];
-          if (slots.contains(id)) {
+          if (slots.contains(id) ||
+              slots.contains(id1) ||
+              slots.contains(id2)) {
           } else {
             print(element['faculty_name']);
           }
@@ -52,6 +65,17 @@ class _MySlotState extends State<MySlot> {
   }
 
   void same() async {
+    var id1 = '2' +
+        id.substring(
+          1,
+        );
+    var id2 = '2' +
+        id.substring(1, 3) +
+        (int.parse(id.substring(
+                  3,
+                )) +
+                1)
+            .toString();
     await FirebaseFirestore.instance
         .collection('faculties')
         .get()
@@ -60,7 +84,9 @@ class _MySlotState extends State<MySlot> {
         var subjects = element['subjects'];
         if (subjects.contains('CSI1007')) {
           var slots = element['slots'];
-          if (slots.contains(id)) {
+          if (slots.contains(id) ||
+              slots.contains(id1) ||
+              slots.contains(id2)) {
           } else {
             print(element['faculty_name']);
           }
