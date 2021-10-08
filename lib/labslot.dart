@@ -31,7 +31,9 @@ class MySlot extends StatefulWidget {
 
 class _MySlotState extends State<MySlot> {
   String id = '';
+  String id1 = '';
   String slot = '';
+  String slot1 = '';
   void different() async {
     await FirebaseFirestore.instance
         .collection('faculties')
@@ -259,7 +261,9 @@ class _MySlotState extends State<MySlot> {
 
   // ignore: non_constant_identifier_names
   Color Tile(int index, var id) {
-    if (this.id == id && this.id != 'null') {
+    if ((this.id == id || this.id1 == id) &&
+        this.id != 'null' &&
+        this.id1 != 'null') {
       return Colors.red;
     }
     if (index == 0) {
@@ -318,7 +322,24 @@ class _MySlotState extends State<MySlot> {
           children: <Widget>[
             InkResponse(
               onTap: () {
-                _slotfinder(slots[index][1], slots[index][0]);
+                var val1;
+                if (index > 0 && index < 7) {
+                  if (index % 2 != 0) {
+                    val1 = index + 1;
+                  } else {
+                    val1 = index - 1;
+                  }
+                  _slotfinder(slots[index][1], slots[index][0], slots[val1][1],
+                      slots[val1][0]);
+                } else if (index > 7 && index < 14) {
+                  if (index % 2 == 0) {
+                    val1 = index + 1;
+                  } else {
+                    val1 = index - 1;
+                  }
+                  _slotfinder(slots[index][1], slots[index][0], slots[val1][1],
+                      slots[val1][0]);
+                }
               },
               child: Container(
                 height: 70,
@@ -337,12 +358,14 @@ class _MySlotState extends State<MySlot> {
     );
   }
 
-  void _slotfinder(var value, var slot) {
+  void _slotfinder(var value, var slot, var valu1, var slot1) {
     print(value);
     setState(() {
-      id = value;
+      this.id = value;
+      this.id1 = valu1;
       if (value != 'null') {
         this.slot = slot;
+        this.slot1 = slot1;
       }
     });
   }
