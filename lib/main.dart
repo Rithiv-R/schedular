@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:schedular/labslot.dart';
 import 'package:schedular/theoryslot.dart';
 
 Future<void> main() async {
@@ -56,6 +57,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 300,
                       child: Center(
                           child: Text('FIND SUBSTITUTION FOR THEORY SLOT',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ))))),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Lab()));
+                  },
+                  color: color1,
+                  child: Container(
+                      height: 50,
+                      width: 300,
+                      child: Center(
+                          child: Text('FIND SUBSTITUTION FOR LAB SLOT',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
