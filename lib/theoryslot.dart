@@ -245,7 +245,32 @@ class _MySlotState extends State<MySlot> {
                   image: NetworkImage(
                       'https://images.unsplash.com/photo-1501349800519-48093d60bde0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
                   fit: BoxFit.cover)),
-          child: showSlot(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              showSlot(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        this.slot = "";
+                        this.id = "";
+                      });
+                    },
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'CLEAR SLOT',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    color: Colors.blue,
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 30)),
+                ],
+              ),
+            ],
+          ),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -402,12 +427,46 @@ class _MySlotState extends State<MySlot> {
   Widget showSlot() {
     return (slot == '' || slot == 'null' || slot == '-' || slot.startsWith('V'))
         ? Center(
-            child: Text(
-              'PLEASE CHOOSE A SLOT',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'PLEASE CHOOSE A SLOT',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(left: 20)),
+              ],
             ),
           )
         : Center(
-            child: Text('SLOT CHOOSEN :${this.slot}'),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'SLOT CHOOSEN :',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+                Text(
+                  '${this.slot}',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20),
+                ),
+              ],
+            ),
           );
   }
 
