@@ -31,3 +31,14 @@ class Theory_same {
     required this.facid,
   });
 }
+
+class Theory_diff {
+  String name;
+  String photo;
+  String facid;
+  Theory_diff({
+    required this.name,
+    required this.photo,
+    required this.facid,
+  });
+}

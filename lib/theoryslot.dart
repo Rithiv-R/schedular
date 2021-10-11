@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:schedular/displaylist/theorydiff.dart';
 
 import 'displaylist/theorysame.dart';
 import 'models.dart';
@@ -36,6 +37,7 @@ class _MySlotState extends State<MySlot> {
   String slot = '';
   // ignore: non_constant_identifier_names
   List<Theory_same> theory_same = [];
+  List<Theory_diff> theory_diff = [];
   void different() async {
     var id1 = '2' +
         id.substring(
@@ -61,6 +63,14 @@ class _MySlotState extends State<MySlot> {
               slots.contains(id1) ||
               slots.contains(id2)) {
           } else {
+            setState(() {
+              Theory_diff lb = Theory_diff(
+                name: element['faculty_name'],
+                photo: element['faculty_pic'],
+                facid: element['faculty_id'],
+              );
+              theory_diff.add(lb);
+            });
             print(element['faculty_name']);
           }
         }
@@ -278,6 +288,8 @@ class _MySlotState extends State<MySlot> {
               Padding(padding: EdgeInsets.only(top: 30)),
               FlatButton(
                   onPressed: () {
+                    theory_diff = [];
+                    different();
                     DiffFaculty(context);
                   },
                   color: Color(0xff4f6ff0),
@@ -472,8 +484,12 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              different();
               Navigator.of(context, rootNavigator: true).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Diff_Fac_Theory(list: theory_diff)));
             },
             child: Text(
               'YES',
