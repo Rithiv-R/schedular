@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:schedular/displaylist/labdiff.dart';
+import 'package:schedular/models.dart';
+import 'package:schedular/theoryslot.dart';
 
 class Lab extends StatefulWidget {
   const Lab({Key? key}) : super(key: key);
@@ -34,41 +37,176 @@ class _MySlotState extends State<MySlot> {
   String id1 = '';
   String slot = '';
   String slot1 = '';
+  // ignore: non_constant_identifier_names
+  List<Lab_diff> lab_diff = [];
   void different() async {
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains('CSI1007')) {
-        } else {
-          var slots = element['slots'];
-          if (slots.contains(id)) {
+    var temp = int.parse(slot.substring(
+      1,
+    ));
+    var temp1 = int.parse(slot1.substring(
+      1,
+    ));
+    if (temp % 6 == 0 || temp1 % 6 == 0) {
+      var id2 = '1' +
+          id.substring(
+            1,
+          );
+      var id3 = '1' +
+          id1.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) -
+                  1)
+              .toString();
+      var id4 = '1' +
+          id1.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) +
+                  1)
+              .toString();
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains('CSI1007')) {
           } else {
-            print(element['faculty_name']);
+            var slots = element['slots'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2) ||
+                slots.contains(id3) ||
+                slots.contains(id4)) {
+            } else {
+              setState(() {
+                Lab_diff lb = Lab_diff(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                lab_diff.add(lb);
+              });
+              print(element['faculty_name']);
+              print(id2);
+              print(id3);
+              print(id4);
+            }
           }
-        }
+        });
       });
-    });
+    } else {
+      var id2 = '1' +
+          id.substring(
+            1,
+          );
+      var id3 = '1' +
+          id1.substring(
+            1,
+          );
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains('CSI1007')) {
+          } else {
+            var slots = element['slots'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2) ||
+                slots.contains(id3)) {
+            } else {
+              print(element['faculty_name']);
+            }
+            print(id2);
+            print(id3);
+          }
+        });
+      });
+    }
   }
 
   void same() async {
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains('CSI1007')) {
-          var slots = element['slots'];
-          if (slots.contains(id)) {
-          } else {
-            print(element['faculty_name']);
-          }
-        } else {}
+    var temp = int.parse(slot.substring(
+      1,
+    ));
+    var temp1 = int.parse(slot1.substring(
+      1,
+    ));
+    if (temp % 6 == 0 || temp1 % 6 == 0) {
+      var id2 = '1' +
+          id.substring(
+            1,
+          );
+      var id3 = '1' +
+          id1.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) -
+                  1)
+              .toString();
+      var id4 = '1' +
+          id1.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) +
+                  1)
+              .toString();
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains('CSI1007')) {
+            var slots = element['slots'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2) ||
+                slots.contains(id3) ||
+                slots.contains(id4)) {
+            } else {
+              print(element['faculty_name']);
+              print(id2);
+              print(id3);
+              print(id4);
+            }
+          } else {}
+        });
       });
-    });
+    } else {
+      var id2 = '1' +
+          id.substring(
+            1,
+          );
+      var id3 = '1' +
+          id1.substring(
+            1,
+          );
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains('CSI1007')) {
+            var slots = element['slots'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2) ||
+                slots.contains(id3)) {
+            } else {
+              print(element['faculty_name']);
+            }
+            print(id2);
+            print(id3);
+          } else {}
+        });
+      });
+    }
   }
 
   void _overall() async {
@@ -240,6 +378,8 @@ class _MySlotState extends State<MySlot> {
               Padding(padding: EdgeInsets.only(top: 30)),
               FlatButton(
                   onPressed: () {
+                    lab_diff = [];
+                    different();
                     DiffFaculty(context);
                   },
                   color: Color(0xff4f6ff0),
@@ -323,6 +463,13 @@ class _MySlotState extends State<MySlot> {
             InkResponse(
               onTap: () {
                 var val1;
+                setState(() {
+                  lab_diff.clear();
+                  slot = '';
+                  slot1 = '';
+                  id = '';
+                  id1 = '';
+                });
                 if (index > 0 && index < 7) {
                   if (index % 2 != 0) {
                     val1 = index + 1;
@@ -358,27 +505,37 @@ class _MySlotState extends State<MySlot> {
     );
   }
 
-  void _slotfinder(var value, var slot, var valu1, var slot1) {
+  void _slotfinder(var value, var slot, var value1, var slot1) {
     print(value);
     setState(() {
-      this.id = value;
-      this.id1 = valu1;
+      if (int.parse(value) < int.parse(value1)) {
+        this.id = value;
+        this.id1 = value1;
+      } else if (int.parse(value1) < int.parse(value)) {
+        this.id1 = value;
+        this.id = value1;
+      }
       if (value != 'null') {
-        this.slot = slot;
-        this.slot1 = slot1;
+        if (int.parse(value) < int.parse(value1)) {
+          this.slot = slot;
+          this.slot1 = slot1;
+        } else if (int.parse(value1) < int.parse(value)) {
+          this.slot1 = slot;
+          this.slot = slot1;
+        }
       }
     });
   }
 
   Widget showSlot() {
-    return (slot == '' || slot == 'null' || slot == '-' || slot.startsWith('V'))
+    return (slot == 'null' || slot == '')
         ? Center(
             child: Text(
               'PLEASE CHOOSE A SLOT',
             ),
           )
         : Center(
-            child: Text('SLOT CHOOSEN :${this.slot}'),
+            child: Text('SLOT CHOOSEN :$slot+$slot1'),
           );
   }
 
@@ -451,8 +608,12 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              different();
+              print(lab_diff);
               Navigator.of(context, rootNavigator: true).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Diff_Fac_lab(list: lab_diff)));
             },
             child: Text(
               'YES',
