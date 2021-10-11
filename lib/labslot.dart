@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/displaylist/labdiff.dart';
 import 'package:schedular/models.dart';
-import 'package:schedular/theoryslot.dart';
+
+import 'displaylist/labsame.dart';
 
 class Lab extends StatefulWidget {
   const Lab({Key? key}) : super(key: key);
@@ -39,6 +39,8 @@ class _MySlotState extends State<MySlot> {
   String slot1 = '';
   // ignore: non_constant_identifier_names
   List<Lab_diff> lab_diff = [];
+  // ignore: non_constant_identifier_names
+  List<Lab_same> lab_same = [];
   void different() async {
     var temp = int.parse(slot.substring(
       1,
@@ -119,6 +121,14 @@ class _MySlotState extends State<MySlot> {
                 slots.contains(id2) ||
                 slots.contains(id3)) {
             } else {
+              setState(() {
+                Lab_diff lb = Lab_diff(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                lab_diff.add(lb);
+              });
               print(element['faculty_name']);
             }
             print(id2);
@@ -169,6 +179,14 @@ class _MySlotState extends State<MySlot> {
                 slots.contains(id3) ||
                 slots.contains(id4)) {
             } else {
+              setState(() {
+                Lab_same lb1 = Lab_same(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                lab_same.add(lb1);
+              });
               print(element['faculty_name']);
               print(id2);
               print(id3);
@@ -199,6 +217,14 @@ class _MySlotState extends State<MySlot> {
                 slots.contains(id2) ||
                 slots.contains(id3)) {
             } else {
+              setState(() {
+                Lab_same lb1 = Lab_same(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                lab_same.add(lb1);
+              });
               print(element['faculty_name']);
             }
             print(id2);
@@ -361,8 +387,11 @@ class _MySlotState extends State<MySlot> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // ignore: deprecated_member_use
               FlatButton(
                   onPressed: () {
+                    lab_same = [];
+                    same();
                     SameFaculty(context);
                   },
                   color: Color(0xff4f6ff0),
@@ -376,6 +405,7 @@ class _MySlotState extends State<MySlot> {
                                 fontWeight: FontWeight.bold,
                               ))))),
               Padding(padding: EdgeInsets.only(top: 30)),
+              // ignore: deprecated_member_use
               FlatButton(
                   onPressed: () {
                     lab_diff = [];
@@ -465,6 +495,7 @@ class _MySlotState extends State<MySlot> {
                 var val1;
                 setState(() {
                   lab_diff.clear();
+                  lab_same.clear();
                   slot = '';
                   slot1 = '';
                   id = '';
@@ -564,8 +595,12 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              same();
+              print(lab_same);
               Navigator.of(context, rootNavigator: true).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Same_Fac_lab(list: lab_same)));
             },
             child: Text(
               'YES',
@@ -608,7 +643,6 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              print(lab_diff);
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.push(
                   context,

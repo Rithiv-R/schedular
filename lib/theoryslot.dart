@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'displaylist/theorysame.dart';
+import 'models.dart';
 
 class Theory extends StatefulWidget {
   const Theory({Key? key}) : super(key: key);
@@ -32,6 +34,8 @@ class MySlot extends StatefulWidget {
 class _MySlotState extends State<MySlot> {
   String id = '';
   String slot = '';
+  // ignore: non_constant_identifier_names
+  List<Theory_same> theory_same = [];
   void different() async {
     var id1 = '2' +
         id.substring(
@@ -88,6 +92,14 @@ class _MySlotState extends State<MySlot> {
               slots.contains(id1) ||
               slots.contains(id2)) {
           } else {
+            setState(() {
+              Theory_same lb1 = Theory_same(
+                name: element['faculty_name'],
+                photo: element['faculty_pic'],
+                facid: element['faculty_id'],
+              );
+              theory_same.add(lb1);
+            });
             print(element['faculty_name']);
           }
         } else {}
@@ -249,6 +261,8 @@ class _MySlotState extends State<MySlot> {
             children: <Widget>[
               FlatButton(
                   onPressed: () {
+                    theory_same = [];
+                    same();
                     SameFaculty(context);
                   },
                   color: Color(0xff4f6ff0),
@@ -410,8 +424,12 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              same();
               Navigator.of(context, rootNavigator: true).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Same_Fac_Theory(list: theory_same)));
             },
             child: Text(
               'YES',
