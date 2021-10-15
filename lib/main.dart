@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:schedular/authentication/signin.dart';
+import 'package:schedular/authentication/signup.dart';
 import 'package:schedular/labslot.dart';
 import 'package:schedular/theoryslot.dart';
 
@@ -19,65 +21,43 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyMainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class MyMainPage extends StatefulWidget {
+  const MyMainPage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyMainPageState createState() => _MyMainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var loading = false;
-  Color color1 = Color(0xff4f6ff0);
+class _MyMainPageState extends State<MyMainPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Substitute Faculty'),
-      ),
+      appBar: AppBar(title: Text('Schedular')),
       body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Theory()));
-                  },
-                  color: color1,
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('FIND SUBSTITUTION FOR THEORY SLOT',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
-              Padding(padding: EdgeInsets.only(top: 20)),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Lab()));
-                  },
-                  color: color1,
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('FIND SUBSTITUTION FOR LAB SLOT',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SignIn()));
+              },
+              child: Text('SIGN-IN'),
+            ),
+            Padding(padding: EdgeInsets.only(top: 40)),
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SignUp()));
+              },
+              child: Text('SIGN-UP'),
+            ),
+          ],
         ),
       ),
     );
