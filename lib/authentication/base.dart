@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/home.dart';
+import 'package:schedular/main.dart';
 
 class MyBase extends StatefulWidget {
   const MyBase({Key? key}) : super(key: key);
@@ -14,13 +15,36 @@ class _MyBaseState extends State<MyBase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Home'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth auth = FirebaseAuth.instance;
+                auth.signOut();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyMainPage()));
+              },
+              icon: Icon(Icons.logout_sharp)),
+        ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),
+              color: Colors.orangeAccent
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),
+        ),
+        title: Text('Proxy Faculty'),
       ),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              child: Image.network('https://thumbs.dreamstime.com/b/team-learning-trainings-seminars-exam-preparation-online-courses-professional-development-retraining-specialists-vector-130855033.jpg'),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
