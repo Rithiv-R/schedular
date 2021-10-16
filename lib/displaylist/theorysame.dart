@@ -20,8 +20,6 @@ class _Same_Fac_TheoryState extends State<Same_Fac_Theory> {
     // TODO: implement initState
     super.initState();
     final_list = widget.list;
-    print(widget.counter);
-    print('s');
   }
 
   @override

@@ -588,12 +588,15 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
+              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          Diff_Fac_Theory(list: theory_diff)));
+                      builder: (context) => Diff_Fac_Theory(
+                            list: theory_diff,
+                            counter: counter,
+                          )));
             },
             child: Text(
               'YES',

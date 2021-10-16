@@ -39,11 +39,12 @@ class _MySlotState extends State<MySlot> {
   String id1 = '';
   String slot = '';
   String slot1 = '';
+  var counter = '0';
   // ignore: non_constant_identifier_names
   List<Lab_diff> lab_diff = [];
   // ignore: non_constant_identifier_names
   List<Lab_same> lab_same = [];
-
+  String fac = '';
   List slotlist = [];
   void different() async {
     var temp = int.parse(slot.substring(
@@ -77,7 +78,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007')) {
+          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
           } else {
             var slots = element['slots'];
             if (slots.contains(id) ||
@@ -117,7 +118,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007')) {
+          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
           } else {
             var slots = element['slots'];
             if (slots.contains(id) ||
@@ -133,10 +134,7 @@ class _MySlotState extends State<MySlot> {
                 );
                 lab_diff.add(lb);
               });
-              print(element['faculty_name']);
             }
-            print(id2);
-            print(id3);
           }
         });
       });
@@ -175,8 +173,9 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007')) {
+          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
             var slots = element['slots'];
+            // ignore: non_constant_identifier_names
             if (slots.contains(id) ||
                 slots.contains(id1) ||
                 slots.contains(id2) ||
@@ -214,7 +213,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007')) {
+          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
             var slots = element['slots'];
             if (slots.contains(id) ||
                 slots.contains(id1) ||
@@ -270,6 +269,7 @@ class _MySlotState extends State<MySlot> {
       querySnapshot.docs.forEach((element) {
         if (widget.user == element['mail_id']) {
           this.slotlist = element['slots'];
+          this.fac = element['faculty_id'];
         }
       });
     });
@@ -648,7 +648,9 @@ class _MySlotState extends State<MySlot> {
                 Text(
                   '$slot+$slot1',
                   style: TextStyle(
-                    color: Colors.green,
+                    color: (this.slotlist.contains(this.id))
+                        ? Colors.green
+                        : Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 21,
                   ),
@@ -686,12 +688,15 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
-              print(lab_same);
+              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Same_Fac_lab(list: lab_same)));
+                      builder: (context) => Same_Fac_lab(
+                            list: lab_same,
+                            counter: counter,
+                          )));
             },
             child: Text(
               'YES',
@@ -734,11 +739,15 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
+              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Diff_Fac_lab(list: lab_diff)));
+                      builder: (context) => Diff_Fac_lab(
+                            list: lab_diff,
+                            counter: counter,
+                          )));
             },
             child: Text(
               'YES',
