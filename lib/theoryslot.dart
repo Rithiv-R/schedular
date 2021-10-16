@@ -550,6 +550,8 @@ class _MySlotState extends State<MySlot> {
                       builder: (context) => Same_Fac_Theory(
                             list: theory_same,
                             counter: counter,
+                            slot: slot,
+                            course: widget.course,
                           )));
             },
             child: Text(
@@ -601,6 +603,8 @@ class _MySlotState extends State<MySlot> {
                       builder: (context) => Diff_Fac_Theory(
                             list: theory_diff,
                             counter: counter,
+                            slot: slot,
+                            course: widget.course,
                           )));
             },
             child: Text(

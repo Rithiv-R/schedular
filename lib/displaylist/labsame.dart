@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:schedular/models.dart';
+import 'package:share/share.dart';
 
 class Same_Fac_lab extends StatefulWidget {
   List<Lab_same> list;
   var counter;
+  var slot;
+  var course;
   Same_Fac_lab({
     required this.list,
     required this.counter,
+    required this.slot,
+    required this.course,
   });
   @override
   _Same_Fac_labState createState() => _Same_Fac_labState();
@@ -71,7 +76,10 @@ class _Same_Fac_labState extends State<Same_Fac_lab> {
                                           ),
                                         ),
                                         trailing: IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Share.share(
+                                                  'You are assigned for substitution for faculty:${final_list[index].facid} - ${final_list[index].name} for the slot -${widget.slot} of course ${widget.course} ');
+                                            },
                                             icon: Icon(
                                               Icons.send_outlined,
                                               color: Colors.green,

@@ -702,6 +702,8 @@ class _MySlotState extends State<MySlot> {
                       builder: (context) => Same_Fac_lab(
                             list: lab_same,
                             counter: counter,
+                            slot: '${slot}+${slot1}',
+                            course: widget.course,
                           )));
             },
             child: Text(
@@ -753,6 +755,8 @@ class _MySlotState extends State<MySlot> {
                       builder: (context) => Diff_Fac_lab(
                             list: lab_diff,
                             counter: counter,
+                            slot: '${slot}+${slot1}',
+                            course: widget.course,
                           )));
             },
             child: Text(

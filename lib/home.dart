@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/labslot.dart';
+import 'package:schedular/main.dart';
 import 'package:schedular/theoryslot.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -44,6 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Substitute Faculty'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth auth = FirebaseAuth.instance;
+                auth.signOut();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyMainPage()));
+              },
+              icon: Icon(Icons.logout_sharp)),
+        ],
       ),
       body: Container(
         child: Center(
