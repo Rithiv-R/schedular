@@ -9,7 +9,8 @@ import 'displaylist/labsame.dart';
 
 class Lab extends StatefulWidget {
   var user;
-  Lab({this.user});
+  var course;
+  Lab({this.user, this.course});
 
   @override
   _LabState createState() => _LabState();
@@ -22,14 +23,15 @@ class _LabState extends State<Lab> {
       appBar: AppBar(
         title: Text('Lab Slot Substitution'),
       ),
-      body: MySlot(user: widget.user),
+      body: MySlot(user: widget.user, course: widget.course),
     );
   }
 }
 
 class MySlot extends StatefulWidget {
   var user;
-  MySlot({this.user});
+  var course;
+  MySlot({this.user, this.course});
   @override
   _MySlotState createState() => _MySlotState();
 }
@@ -78,7 +80,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
+          if (subjects.contains(widget.course)) {
           } else {
             var slots = element['slots'];
             if (slots.contains(id) ||
@@ -118,7 +120,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
+          if (subjects.contains(widget.course)) {
           } else {
             var slots = element['slots'];
             if (slots.contains(id) ||
@@ -173,7 +175,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
+          if (subjects.contains(widget.course)) {
             var slots = element['slots'];
             // ignore: non_constant_identifier_names
             if (slots.contains(id) ||
@@ -183,12 +185,14 @@ class _MySlotState extends State<MySlot> {
                 slots.contains(id4)) {
             } else {
               setState(() {
-                Lab_same lb1 = Lab_same(
-                  name: element['faculty_name'],
-                  photo: element['faculty_pic'],
-                  facid: element['faculty_id'],
-                );
-                lab_same.add(lb1);
+                if (element['faculty_id'] != fac) {
+                  Lab_same lb1 = Lab_same(
+                    name: element['faculty_name'],
+                    photo: element['faculty_pic'],
+                    facid: element['faculty_id'],
+                  );
+                  lab_same.add(lb1);
+                }
               });
               print(element['faculty_name']);
               print(id2);
@@ -213,7 +217,7 @@ class _MySlotState extends State<MySlot> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
           var subjects = element['subjects'];
-          if (subjects.contains('CSI1007') && element['faculty_id'] != fac) {
+          if (subjects.contains(widget.course)) {
             var slots = element['slots'];
             if (slots.contains(id) ||
                 slots.contains(id1) ||
@@ -221,12 +225,14 @@ class _MySlotState extends State<MySlot> {
                 slots.contains(id3)) {
             } else {
               setState(() {
-                Lab_same lb1 = Lab_same(
-                  name: element['faculty_name'],
-                  photo: element['faculty_pic'],
-                  facid: element['faculty_id'],
-                );
-                lab_same.add(lb1);
+                if (element['faculty_id'] != fac) {
+                  Lab_same lb1 = Lab_same(
+                    name: element['faculty_name'],
+                    photo: element['faculty_pic'],
+                    facid: element['faculty_id'],
+                  );
+                  lab_same.add(lb1);
+                }
               });
               print(element['faculty_name']);
             }

@@ -9,7 +9,8 @@ import 'models.dart';
 // ignore: must_be_immutable
 class Theory extends StatefulWidget {
   var user;
-  Theory({this.user});
+  var course;
+  Theory({this.user, this.course});
 
   @override
   _TheoryState createState() => _TheoryState();
@@ -22,7 +23,10 @@ class _TheoryState extends State<Theory> {
       appBar: AppBar(
         title: Text('Theory Slot Substitution'),
       ),
-      body: MySlot(user: widget.user),
+      body: MySlot(
+        user: widget.user,
+        course: widget.course,
+      ),
     );
   }
 }
@@ -30,7 +34,8 @@ class _TheoryState extends State<Theory> {
 // ignore: must_be_immutable
 class MySlot extends StatefulWidget {
   var user;
-  MySlot({this.user});
+  var course;
+  MySlot({this.user, this.course});
 
   @override
   _MySlotState createState() => _MySlotState();
@@ -64,7 +69,7 @@ class _MySlotState extends State<MySlot> {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         var subjects = element['subjects'];
-        if (subjects.contains('CSI1007')) {
+        if (subjects.contains(widget.course)) {
         } else {
           var slots = element['slots'];
           if (slots.contains(id) ||
@@ -107,7 +112,7 @@ class _MySlotState extends State<MySlot> {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         var subjects = element['subjects'];
-        if (subjects.contains('CSI1007')) {
+        if (subjects.contains(widget.course)) {
           var slots = element['slots'];
           var faculty_id = element['faculty_id'];
           if (slots.contains(id) ||
