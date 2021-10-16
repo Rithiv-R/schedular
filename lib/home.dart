@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/labslot.dart';
-import 'package:schedular/main.dart';
 import 'package:schedular/theoryslot.dart';
+import 'package:schedular/main.dart';
 
 class MyHomePage extends StatefulWidget {
   var user;
@@ -44,8 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Color color1 = Color(0xff4f6ff0);
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Substitute Faculty'),
         actions: [
           IconButton(
               onPressed: () {
@@ -56,6 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               icon: Icon(Icons.logout_sharp)),
         ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),
+              color: Colors.orangeAccent
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),
+        ),
+        title: Text('Substitute Faculty'),
       ),
       body: Container(
         child: Center(
@@ -68,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ListTile(
                 title: showSlot(),
                 trailing: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Colors.redAccent,
                   onPressed: () {
                     setState(() {
                       this.course = '';
@@ -85,11 +99,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => Theory(
-                                  user: widget.user,
-                                  course: course,
-                                )));
+                              user: widget.user,
+                              course: course,
+                            )));
                   },
-                  color: color1,
+                  color: Colors.deepOrangeAccent,
+                  splashColor: Colors.deepOrange,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                  ),
                   child: Container(
                       height: 50,
                       width: 300,
@@ -106,11 +124,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => Lab(
-                                  user: widget.user,
-                                  course: course,
-                                )));
+                              user: widget.user,
+                              course: course,
+                            )));
                   },
-                  color: color1,
+                  color: Colors.deepOrangeAccent,
+                  splashColor: Colors.deepOrange,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                  ),
                   child: Container(
                       height: 50,
                       width: 300,
@@ -125,28 +147,34 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                   child: Container(
-                child: ListView.builder(
-                    itemCount: slotlist.length,
-                    itemBuilder: (context, index) => Column(children: <Widget>[
+                    child: ListView.builder(
+                        itemCount: slotlist.length,
+                        itemBuilder: (context, index) => Column(children: <Widget>[
                           GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                this.course = slotlist[index];
-                              });
-                            },
+                            onTap: () {setState(() {this.course = slotlist[index];});},
                             child: Container(
                                 child: Card(
-                              color: (course == slotlist[index])
-                                  ? Colors.grey
-                                  : Colors.white,
-                              elevation: 1,
-                              child: ListTile(
-                                title: Text(slotlist[index]),
-                              ),
-                            )),
+                                  shape:RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  color: (course == slotlist[index])
+                                      ? Colors.grey
+                                      : Colors.white,
+                                  elevation: 1,
+                                  child: ListTile(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    tileColor: Colors.white60,
+                                    title: Text(slotlist[index]),
+                                  ),
+                                )
+                            ),
                           ),
-                        ])),
-              ))
+                        ]
+                        )
+                    ),
+                  ))
             ],
           ),
         ),
@@ -157,48 +185,48 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget showSlot() {
     return (course == '')
         ? Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'PLEASE CHOOSE A SLOT',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(left: 20)),
-              ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'PLEASE CHOOSE A SLOT',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
-          )
+          ),
+          Padding(padding: EdgeInsets.only(left: 20)),
+        ],
+      ),
+    )
         : Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Slot Choosen :',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19,
-                  ),
-                ),
-                Text(
-                  '$course',
-                  style: TextStyle(
-                    color: (this.slotlist.contains(this.id))
-                        ? Colors.green
-                        : Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20),
-                ),
-              ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Slot Choosen :',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 19,
             ),
-          );
+          ),
+          Text(
+            '$course',
+            style: TextStyle(
+              color: (this.slotlist.contains(this.id))
+                  ? Colors.green
+                  : Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 19,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+          ),
+        ],
+      ),
+    );
   }
 }
