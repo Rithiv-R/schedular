@@ -3,13 +3,14 @@ import 'package:schedular/labslot.dart';
 import 'package:schedular/theoryslot.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
-
+  var user;
+  MyHomePage({this.user});
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
   var loading = false;
   Color color1 = Color(0xff4f6ff0);
   Widget build(BuildContext context) {
@@ -24,8 +25,12 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               FlatButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Theory()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Theory(
+                                  user: widget.user,
+                                )));
                   },
                   color: color1,
                   child: Container(
@@ -40,8 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(padding: EdgeInsets.only(top: 20)),
               FlatButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Lab()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Lab(
+                                  user: widget.user,
+                                )));
                   },
                   color: color1,
                   child: Container(

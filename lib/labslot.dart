@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/displaylist/labdiff.dart';
@@ -7,7 +8,8 @@ import 'package:schedular/models.dart';
 import 'displaylist/labsame.dart';
 
 class Lab extends StatefulWidget {
-  const Lab({Key? key}) : super(key: key);
+  var user;
+  Lab({this.user});
 
   @override
   _LabState createState() => _LabState();
@@ -20,14 +22,14 @@ class _LabState extends State<Lab> {
       appBar: AppBar(
         title: Text('Lab Slot Substitution'),
       ),
-      body: MySlot(),
+      body: MySlot(user: widget.user),
     );
   }
 }
 
 class MySlot extends StatefulWidget {
-  const MySlot({Key? key}) : super(key: key);
-
+  var user;
+  MySlot({this.user});
   @override
   _MySlotState createState() => _MySlotState();
 }
@@ -41,6 +43,8 @@ class _MySlotState extends State<MySlot> {
   List<Lab_diff> lab_diff = [];
   // ignore: non_constant_identifier_names
   List<Lab_same> lab_same = [];
+
+  List slotlist = [];
   void different() async {
     var temp = int.parse(slot.substring(
       1,
@@ -245,6 +249,27 @@ class _MySlotState extends State<MySlot> {
         if (slots.contains(id)) {
         } else {
           print(element['faculty_name']);
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    store();
+    print(slotlist);
+  }
+
+  void store() async {
+    await FirebaseFirestore.instance
+        .collection('faculties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if (widget.user == element['mail_id']) {
+          this.slotlist = element['slots'];
         }
       });
     });
@@ -467,7 +492,11 @@ class _MySlotState extends State<MySlot> {
     } else if (index == 7) {
       return Color(0xffDDA8F3);
     } else {
-      return Color(0xffDCD868);
+      if (slotlist.contains(id)) {
+        return Color(0xff66de33);
+      } else {
+        return Color(0xffDCD868);
+      }
     }
   }
 
@@ -549,7 +578,9 @@ class _MySlotState extends State<MySlot> {
                 height: 70,
                 width: 100,
                 child: Card(
-                  color: Tile(index, slots[index][1]),
+                  color: (slot.contains(slots[index][1]))
+                      ? Color(0xff66de33)
+                      : Tile(index, slots[index][1]),
                   child: Center(
                     child: Text(slots[index][0]),
                   ),

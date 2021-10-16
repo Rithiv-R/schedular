@@ -6,8 +6,10 @@ import 'package:schedular/displaylist/theorydiff.dart';
 import 'displaylist/theorysame.dart';
 import 'models.dart';
 
+// ignore: must_be_immutable
 class Theory extends StatefulWidget {
-  const Theory({Key? key}) : super(key: key);
+  var user;
+  Theory({this.user});
 
   @override
   _TheoryState createState() => _TheoryState();
@@ -20,13 +22,15 @@ class _TheoryState extends State<Theory> {
       appBar: AppBar(
         title: Text('Theory Slot Substitution'),
       ),
-      body: MySlot(),
+      body: MySlot(user: widget.user),
     );
   }
 }
 
+// ignore: must_be_immutable
 class MySlot extends StatefulWidget {
-  const MySlot({Key? key}) : super(key: key);
+  var user;
+  MySlot({this.user});
 
   @override
   _MySlotState createState() => _MySlotState();
@@ -35,9 +39,13 @@ class MySlot extends StatefulWidget {
 class _MySlotState extends State<MySlot> {
   String id = '';
   String slot = '';
+  String fac = '';
+  var counter = '0';
   // ignore: non_constant_identifier_names
   List<Theory_same> theory_same = [];
+  // ignore: non_constant_identifier_names
   List<Theory_diff> theory_diff = [];
+  List slotlist = [];
   void different() async {
     var id1 = '2' +
         id.substring(
@@ -64,12 +72,15 @@ class _MySlotState extends State<MySlot> {
               slots.contains(id2)) {
           } else {
             setState(() {
-              Theory_diff lb = Theory_diff(
-                name: element['faculty_name'],
-                photo: element['faculty_pic'],
-                facid: element['faculty_id'],
-              );
-              theory_diff.add(lb);
+              if (element['faculty_id'] == fac) {
+              } else {
+                Theory_diff lb = Theory_diff(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                theory_diff.add(lb);
+              }
             });
             print(element['faculty_name']);
           }
@@ -98,9 +109,11 @@ class _MySlotState extends State<MySlot> {
         var subjects = element['subjects'];
         if (subjects.contains('CSI1007')) {
           var slots = element['slots'];
+          var faculty_id = element['faculty_id'];
           if (slots.contains(id) ||
               slots.contains(id1) ||
               slots.contains(id2)) {
+          } else if (faculty_id == fac) {
           } else {
             setState(() {
               Theory_same lb1 = Theory_same(
@@ -110,13 +123,13 @@ class _MySlotState extends State<MySlot> {
               );
               theory_same.add(lb1);
             });
-            print(element['faculty_name']);
           }
         } else {}
       });
     });
   }
 
+  // ignore: unused_element
   void _overall() async {
     await FirebaseFirestore.instance
         .collection('faculties')
@@ -130,6 +143,27 @@ class _MySlotState extends State<MySlot> {
         }
       });
     });
+  }
+
+  void store() async {
+    await FirebaseFirestore.instance
+        .collection('faculties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if (widget.user == element['mail_id']) {
+          this.slotlist = element['slots'];
+          this.fac = element['faculty_id'];
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    store();
   }
 
   @override
@@ -344,7 +378,11 @@ class _MySlotState extends State<MySlot> {
     } else if (index == 7) {
       return Color(0xffDDA8F3);
     } else {
-      return Color(0xffDCD868);
+      if (slotlist.contains(id)) {
+        return Color(0xff66de33);
+      } else {
+        return Color(0xffDCD868);
+      }
     }
   }
 
@@ -401,7 +439,9 @@ class _MySlotState extends State<MySlot> {
                 height: 70,
                 width: 100,
                 child: Card(
-                  color: Tile(index, slots[index][1]),
+                  color: (slot.contains(slots[index][1]) == true)
+                      ? Color(0xff66de33)
+                      : Tile(index, slots[index][1]),
                   child: Center(
                     child: Text(slots[index][0]),
                   ),
@@ -457,7 +497,9 @@ class _MySlotState extends State<MySlot> {
                 Text(
                   '${this.slot}',
                   style: TextStyle(
-                    color: Colors.green,
+                    color: (this.slotlist.contains(this.id))
+                        ? Colors.green
+                        : Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                   ),
@@ -495,12 +537,15 @@ class _MySlotState extends State<MySlot> {
           ),
           FlatButton(
             onPressed: () {
+              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          Same_Fac_Theory(list: theory_same)));
+                      builder: (context) => Same_Fac_Theory(
+                            list: theory_same,
+                            counter: counter,
+                          )));
             },
             child: Text(
               'YES',
