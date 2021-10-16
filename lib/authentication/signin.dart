@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:schedular/authentication/base.dart';
 import 'package:schedular/authentication/signup.dart';
 import 'package:schedular/home.dart';
 
@@ -131,8 +132,7 @@ class _SignInState extends State<SignIn> {
                                 email: email, password: password)
                             .then((_) =>
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyHomePage(user: user!.email),
+                                  builder: (context) => MyBase(),
                                 )));
                       }),
                 )

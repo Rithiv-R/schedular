@@ -317,7 +317,7 @@ class _SignUpState extends State<SignUp> {
   void Checker() async {
     var counter = 0;
     await FirebaseFirestore.instance
-        .collection('faculties')
+        .collection('committee')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
