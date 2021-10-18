@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:schedular/authentication/base.dart';
 import 'package:schedular/authentication/signup.dart';
 import 'package:schedular/home.dart';
+import 'package:schedular/mainhome/welcome.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -132,7 +133,9 @@ class _SignInState extends State<SignIn> {
                                 email: email, password: password)
                             .then((_) =>
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MyBase(),
+                                  builder: (context) => Welcome(
+                                    user: user!.email,
+                                  ),
                                 )));
                       }),
                 )

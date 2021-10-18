@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:schedular/labslot.dart';
 import 'package:schedular/main.dart';
 import 'package:schedular/theoryslot.dart';
+import 'package:schedular/Timeview/timetabletheory.dart';
+import 'package:schedular/Timeview/timetablelab.dart';
 
 class MyHomePage extends StatefulWidget {
   var user;
@@ -45,7 +47,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Substitute Faculty'),
+        backgroundColor: Colors.orangeAccent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30)),
+        ),
+        title: Text('SUBSTITUTE FACULTY'),
         actions: [
           IconButton(
               onPressed: () {
@@ -137,11 +152,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Container(
                                 child: Card(
                               color: (course == slotlist[index])
-                                  ? Colors.grey
+                                  ? Colors.orangeAccent
                                   : Colors.white,
                               elevation: 1,
                               child: ListTile(
-                                title: Text(slotlist[index]),
+                                title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[Text(slotlist[index])]),
                               ),
                             )),
                           ),

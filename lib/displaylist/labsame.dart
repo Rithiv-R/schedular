@@ -31,7 +31,20 @@ class _Same_Fac_labState extends State<Same_Fac_lab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FREE FACULTY LIST'),
+        backgroundColor: Colors.orangeAccent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30)),
+        ),
+        title: Text('LAB FREE FACULTIES'),
       ),
       body: (final_list.length == 0)
           ? Container(
@@ -126,7 +139,6 @@ class _Same_Fac_labState extends State<Same_Fac_lab> {
                                     ),
                                     border: Border.all(
                                       width: 3,
-                                      color: Colors.teal,
                                       style: BorderStyle.solid,
                                     ),
                                   ),
