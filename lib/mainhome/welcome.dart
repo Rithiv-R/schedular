@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/Timeview/Homestart.dart';
-import 'package:schedular/home.dart';
+import 'package:schedular/extra%20class/extra1.dart';
+import 'package:schedular/substitute%20class.dart/sClass2.dart';
+import 'package:schedular/substitute%20faculty.dart/home.dart';
 import 'package:schedular/profile/facultyprofile.dart';
+import 'package:schedular/requestmod/requestHome.dart';
 
 class Welcome extends StatefulWidget {
   var user;
@@ -83,7 +87,12 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Extra1()));
+                          },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
                           child: Card(
@@ -148,7 +157,12 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SubClass2()));
+                          },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
                           child: Card(
@@ -177,7 +191,12 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RequestHome()));
+                          },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
                           child: Card(
@@ -206,12 +225,42 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            var facid;
+                            var phone;
+                            var name;
+                            var designation;
+                            var photo;
+                            var email;
+                            var school;
+                            await FirebaseFirestore.instance
+                                .collection('faculties')
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              querySnapshot.docs.forEach((element) {
+                                if (widget.user == element['mail_id']) {
+                                  facid = element['faculty_id'];
+                                  phone = element['phone_no'];
+                                  name = element['faculty_name'];
+                                  photo = element['faculty_pic'];
+                                  designation = element['designation'];
+                                  email = widget.user;
+                                  school = element['school'];
+                                }
+                              });
+                            });
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Profile(
-                                          user: widget.user,
+                                          facid: facid,
+                                          designation: designation,
+                                          phone: phone,
+                                          photo: photo,
+                                          school: school,
+                                          email: email,
+                                          name: name,
                                         )));
                           },
                           splashColor: Colors.black54,

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:schedular/labslot.dart';
+import 'package:schedular/substitute%20faculty.dart/labslot.dart';
 import 'package:schedular/main.dart';
-import 'package:schedular/theoryslot.dart';
+import 'package:schedular/substitute%20faculty.dart/theoryslot.dart';
 import 'package:schedular/Timeview/timetabletheory.dart';
 import 'package:schedular/Timeview/timetablelab.dart';
 

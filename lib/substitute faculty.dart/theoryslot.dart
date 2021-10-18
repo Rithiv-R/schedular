@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:schedular/displaylist/theorydiff.dart';
 import 'package:schedular/main.dart';
 
-import 'displaylist/theorysame.dart';
+import '../displaylist/theorysame.dart';
 import 'models.dart';
 
 // ignore: must_be_immutable
@@ -327,7 +327,7 @@ class _MySlotState extends State<MySlot> {
                     },
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'CLEAR SLOT',
+                      'REFRESH',
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                     color: Colors.blue,

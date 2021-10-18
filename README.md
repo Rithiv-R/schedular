@@ -1,6 +1,6 @@
-# schedular
+# Faculty Proxy
 
-A new Flutter project.
+
 
 ## Getting Started
 

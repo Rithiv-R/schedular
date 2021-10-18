@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:schedular/models.dart';
+import 'package:schedular/substitute%20faculty.dart/models.dart';
+
 import 'package:share/share.dart';
 
 class Same_Fac_lab extends StatefulWidget {

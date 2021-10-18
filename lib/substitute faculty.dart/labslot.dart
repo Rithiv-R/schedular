@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/displaylist/labdiff.dart';
+import 'package:schedular/displaylist/labsame.dart';
 import 'package:schedular/main.dart';
-import 'package:schedular/models.dart';
-
-import 'displaylist/labsame.dart';
+import 'package:schedular/substitute%20faculty.dart/models.dart';
 
 class Lab extends StatefulWidget {
   var user;
@@ -437,7 +435,7 @@ class _MySlotState extends State<MySlot> {
                       });
                     },
                     child: Text(
-                      'CLEAR SLOT',
+                      'REFRESH',
                       style: TextStyle(color: Colors.white),
                     ),
                     color: Colors.blue,

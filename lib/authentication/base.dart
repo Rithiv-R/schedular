@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:schedular/home.dart';
+import 'package:schedular/substitute%20faculty.dart/home.dart';
 
 class MyBase extends StatefulWidget {
   const MyBase({Key? key}) : super(key: key);

@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:schedular/main.dart';
-import 'package:schedular/models.dart';
+import 'package:schedular/substitute%20faculty.dart/models.dart';
 
 // ignore: must_be_immutable
 class TimeTable1 extends StatefulWidget {
