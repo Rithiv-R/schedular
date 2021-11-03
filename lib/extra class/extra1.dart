@@ -28,7 +28,7 @@ class _Extra1State extends State<Extra1> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('Request Portal'),
+        title: Text('EXTRA CLASS'),
       ),
       body: Container(
           child: Column(

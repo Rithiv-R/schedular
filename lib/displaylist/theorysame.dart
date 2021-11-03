@@ -44,7 +44,7 @@ class _Same_Fac_TheoryState extends State<Same_Fac_Theory> {
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)),
           ),
-          title: Text('LAB FREE FACULTIES'),
+          title: Text('THEORY FREE FACULTIES'),
         ),
         body: (final_list.length == 0)
             ? Container(

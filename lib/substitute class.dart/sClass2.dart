@@ -29,7 +29,7 @@ class _SubClass2State extends State<SubClass2> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('Request Portal'),
+        title: Text('SUBSTITUTE CLASS'),
       ),
       body: Container(
           child: Column(
