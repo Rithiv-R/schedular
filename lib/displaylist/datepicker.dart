@@ -81,6 +81,7 @@ class _DatepickState extends State<Datepick> {
                       'date': DateTime.parse(obj.toString()),
                       'slotids': widget.slotids,
                       'status': 0,
+                      'trial-id': 0,
                     }))
                     .then((value) => print("User Added"))
                     .catchError((error) => print("Failed to add user: $error"));

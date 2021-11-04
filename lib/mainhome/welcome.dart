@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/Timeview/Homestart.dart';
 import 'package:schedular/extra%20class/extra1.dart';
+import 'package:schedular/requestmod/sreqmodel.dart';
 import 'package:schedular/substitute%20class.dart/sClass2.dart';
 import 'package:schedular/substitute%20faculty.dart/home.dart';
 import 'package:schedular/profile/facultyprofile.dart';
@@ -16,6 +17,39 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  var facid;
+  var phone;
+  var name;
+  var designation;
+  var photo;
+  var email;
+  var school;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getter();
+  }
+
+  void getter() async {
+    await FirebaseFirestore.instance
+        .collection('faculties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if (widget.user == element['mail_id']) {
+          facid = element['faculty_id'];
+          phone = element['phone_no'];
+          name = element['faculty_name'];
+          photo = element['faculty_pic'];
+          designation = element['designation'];
+          email = widget.user;
+          school = element['school'];
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -191,11 +225,12 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RequestHome()));
+                                    builder: (context) =>
+                                        RequestHome(facid: facid)));
                           },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
@@ -226,30 +261,6 @@ class _WelcomeState extends State<Welcome> {
                         ),
                         InkWell(
                           onTap: () async {
-                            var facid;
-                            var phone;
-                            var name;
-                            var designation;
-                            var photo;
-                            var email;
-                            var school;
-                            await FirebaseFirestore.instance
-                                .collection('faculties')
-                                .get()
-                                .then((QuerySnapshot querySnapshot) {
-                              querySnapshot.docs.forEach((element) {
-                                if (widget.user == element['mail_id']) {
-                                  facid = element['faculty_id'];
-                                  phone = element['phone_no'];
-                                  name = element['faculty_name'];
-                                  photo = element['faculty_pic'];
-                                  designation = element['designation'];
-                                  email = widget.user;
-                                  school = element['school'];
-                                }
-                              });
-                            });
-
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

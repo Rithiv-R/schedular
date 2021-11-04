@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:schedular/requestmod/requestdetails2.dart';
+import 'package:schedular/requestmod/sreqmodel.dart';
 
 class RequestSent extends StatefulWidget {
-  const RequestSent({Key? key}) : super(key: key);
+  var smode;
+
+  RequestSent({this.smode});
 
   @override
   _RequestSentState createState() => _RequestSentState();
@@ -48,99 +52,97 @@ class _RequestSentState extends State<RequestSent> {
           SizedBox(
             height: 10,
           ),
-          Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(35)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.smode.length,
+              itemBuilder: (context, index) => Column(
+                children: <Widget>[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(35)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://raw.githubusercontent.com/Asquare-B/software/main/assets/images/profile.png'),
-                              radius: 50,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: <Widget>[
-                              Text(
-                                'Username',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                              Container(
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    widget.smode[index].reqphoto,
+                                  ),
+                                  radius: 50,
                                 ),
                               ),
                               SizedBox(
-                                height: 15,
+                                width: 10,
                               ),
-                              Text(
-                                'Registered ID',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    widget.smode[index].reqholder,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    widget.smode[index].reqid +
+                                        ' - ' +
+                                        widget.smode[index].reqslot,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMEd()
+                                        .format(widget.smode[index].reqdate),
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              )
                             ],
                           ),
+                          MaterialButton(
+                            height: 45,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            color: Colors.lightBlueAccent,
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => RequestDetails2()));
+                            },
+                            child: Text(
+                              'Request\nDetails',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          )
                         ],
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            'Slot',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Date',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                      MaterialButton(
-                        height: 45,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Colors.lightBlueAccent,
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RequestDetails2()));
-                        },
-                        child: Text(
-                          'Request\nDetails',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          )
         ],
       )),
     );

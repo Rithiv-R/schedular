@@ -1,15 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/requestmod/mainrequest.dart';
 import 'package:schedular/requestmod/requestSent.dart';
+import 'package:schedular/requestmod/sreqmodel.dart';
 
 class RequestHome extends StatefulWidget {
-  const RequestHome({Key? key}) : super(key: key);
-
+  var facid;
+  RequestHome({
+    required this.facid,
+  });
   @override
   _RequestHomeState createState() => _RequestHomeState();
 }
 
 class _RequestHomeState extends State<RequestHome> {
+  List<sreqmodel> smode = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('send_request')
+        .doc(widget.facid)
+        .collection(widget.facid.toString() + '-srequest')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if (element['trial-id'] == 0) {
+          sreqmodel sw = sreqmodel(
+              reqdate: element['date'].toDate(),
+              reqholder: element['faculty_name'],
+              reqid: element['faculty_id'],
+              reqphoto: element['photo'],
+              reqslot: element['slot']);
+          smode.add(sw);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -77,8 +106,8 @@ class _RequestHomeState extends State<RequestHome> {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => RequestSent()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RequestSent(smode: smode)));
                   },
                   splashColor: Colors.deepOrange,
                   color: Colors.orangeAccent,
