@@ -297,11 +297,12 @@ class _MySlotState extends State<MySlot> {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         if (widget.user == element['mail_id']) {
-          this.slotlist = element['slots'];
+          this.slotlist = element[widget.course];
           this.fac = element['faculty_id'];
         }
       });
     });
+    print(slotlist);
   }
 
   @override
@@ -726,7 +727,10 @@ class _MySlotState extends State<MySlot> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Same_Fac_lab(
+                            id: this.id,
+                            id1: this.id1,
                             list: lab_same,
+                            mainfac: this.fac,
                             counter: counter,
                             slot: '${slot}+${slot1}',
                             course: widget.course,
@@ -779,7 +783,10 @@ class _MySlotState extends State<MySlot> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Diff_Fac_lab(
+                            id: this.id,
+                            id1: this.id1,
                             list: lab_diff,
+                            mainfac: this.fac,
                             counter: counter,
                             slot: '${slot}+${slot1}',
                             course: widget.course,

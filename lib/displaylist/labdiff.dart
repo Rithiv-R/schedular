@@ -1,17 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:schedular/displaylist/datepicker.dart';
+import 'package:schedular/main.dart';
 import 'package:schedular/substitute%20faculty.dart/models.dart';
 
 import 'package:share/share.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class Diff_Fac_lab extends StatefulWidget {
   List<Lab_diff> list;
   var counter;
   var slot;
+  var mainfac;
   var course;
+  var id;
+  var id1;
+
   Diff_Fac_lab({
     required this.list,
+    required this.id,
+    required this.id1,
     required this.counter,
     required this.slot,
+    required this.mainfac,
     required this.course,
   });
   @override
@@ -22,10 +33,20 @@ class Diff_Fac_lab extends StatefulWidget {
 class _Diff_Fac_labState extends State<Diff_Fac_lab> {
   List<Lab_diff> final_list = [];
   var facid = '';
+  var days;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    List<int> first = [7, 1, 2, 3, 4, 5, 6];
+    List<int> second = [int.parse(widget.id.toString().substring(1, 2))];
+    List<int> output = [];
+    first.forEach((element) {
+      if (!second.contains(element)) {
+        output.add(element);
+      }
+    });
+    days = output;
     final_list = widget.list;
   }
 
@@ -89,9 +110,35 @@ class _Diff_Fac_labState extends State<Diff_Fac_lab> {
                                               ),
                                             ),
                                             trailing: IconButton(
-                                                onPressed: () {
-                                                  Share.share(
-                                                      'You are assigned for substitution for faculty:${final_list[index].facid} - ${final_list[index].name} for the slot -${widget.slot} of course ${widget.course} ');
+                                                onPressed: () async {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                                  Datepick(
+                                                                    slotids: [
+                                                                      widget.id,
+                                                                      widget.id1
+                                                                    ],
+                                                                    finallist:
+                                                                        this.days,
+                                                                    mainfac: widget
+                                                                        .mainfac,
+                                                                    slot: widget
+                                                                        .slot,
+                                                                    course: widget
+                                                                        .course,
+                                                                    fac_name:
+                                                                        final_list[index]
+                                                                            .name,
+                                                                    fac_id: final_list[
+                                                                            index]
+                                                                        .facid,
+                                                                    fac_photo:
+                                                                        final_list[index]
+                                                                            .photo,
+                                                                  )));
                                                 },
                                                 icon: Icon(
                                                   Icons.send_outlined,
@@ -115,7 +162,10 @@ class _Diff_Fac_labState extends State<Diff_Fac_lab> {
                                           ),
                                         ),
                                         Padding(
-                                            padding: EdgeInsets.only(top: 10)),
+                                          padding: EdgeInsets.only(
+                                            top: 10,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
