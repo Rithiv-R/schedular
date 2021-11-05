@@ -40,11 +40,14 @@ class _RequestSentState extends State<RequestSent> {
           SizedBox(
             height: 20,
           ),
-          Center(
+          Padding(
+            padding: EdgeInsets.only(
+              left: 25,
+            ),
             child: Text(
-              'SENT REQUESTS',
+              'REQUESTS SENT',
               style: TextStyle(
-                fontSize: 35,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -62,7 +65,7 @@ class _RequestSentState extends State<RequestSent> {
                         borderRadius: BorderRadius.circular(35)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Row(
@@ -115,24 +118,25 @@ class _RequestSentState extends State<RequestSent> {
                                   ),
                                   SizedBox(
                                     height: 15,
-                                  )
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                          MaterialButton(
-                            height: 45,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            color: Colors.lightBlueAccent,
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => RequestDetails2()));
-                            },
-                            child: Text(
-                              'Request\nDetails',
-                              style: TextStyle(fontSize: 15),
+                          Center(
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              color: Colors.lightBlueAccent,
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RequestDetails2()));
+                              },
+                              child: Text(
+                                'Sent Request Details',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           )
                         ],

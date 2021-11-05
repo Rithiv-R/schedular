@@ -3,16 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:schedular/requestmod/requestdetail.dart';
 
+// ignore: must_be_immutable
 class Request extends StatefulWidget {
-  const Request({Key? key}) : super(key: key);
+  var rmode;
+  Request({required this.rmode});
 
   @override
   _RequestState createState() => _RequestState();
 }
 
 class _RequestState extends State<Request> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -40,11 +49,14 @@ class _RequestState extends State<Request> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(
-            height: 10,
+            height: 20,
           ),
-          Center(
+          Padding(
+            padding: EdgeInsets.only(
+              left: 25,
+            ),
             child: Text(
-              'Requests received\nSubstitute Faculty',
+              'REQUESTS RECEIVED',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -54,99 +66,98 @@ class _RequestState extends State<Request> {
           SizedBox(
             height: 10,
           ),
-          Column(
-            children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(35)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.rmode.length,
+              itemBuilder: (context, index) => Column(
+                children: <Widget>[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(35)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://raw.githubusercontent.com/Asquare-B/software/main/assets/images/Untitled.png'),
-                              radius: 50,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: <Widget>[
-                              Text(
-                                'Username',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                              Container(
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    widget.rmode[index].reqphoto,
+                                  ),
+                                  radius: 50,
                                 ),
                               ),
                               SizedBox(
-                                height: 15,
+                                width: 10,
                               ),
-                              Text(
-                                'Registered ID',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    widget.rmode[index].reqholder,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    widget.rmode[index].reqid +
+                                        ' - ' +
+                                        widget.rmode[index].reqslot,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMEd()
+                                        .format(widget.rmode[index].reqdate),
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              )
                             ],
                           ),
+                          Center(
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              color: Colors.lightBlueAccent,
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RequestDetails()));
+                              },
+                              child: Text(
+                                'Received Request Details',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            'Slot',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Date',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                      MaterialButton(
-                        height: 45,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Colors.lightBlueAccent,
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RequestDetails()));
-                        },
-                        child: Text(
-                          'Request\nDetails',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          )
         ],
       )),
     );

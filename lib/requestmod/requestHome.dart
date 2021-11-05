@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/requestmod/mainrequest.dart';
 import 'package:schedular/requestmod/requestSent.dart';
@@ -15,6 +16,7 @@ class RequestHome extends StatefulWidget {
 
 class _RequestHomeState extends State<RequestHome> {
   List<sreqmodel> smode = [];
+  List<rreqmodel> rmode = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -34,6 +36,44 @@ class _RequestHomeState extends State<RequestHome> {
               reqphoto: element['photo'],
               reqslot: element['slot']);
           smode.add(sw);
+        }
+      });
+    });
+    FirebaseFirestore.instance
+        .collection('receive_request')
+        .doc(widget.facid)
+        .collection(widget.facid.toString() + '-rrequest')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        if (element['trial-id'] == 0) {
+          var sdoc = element['sdoc_name'];
+          var sid = element['requester'];
+          FirebaseFirestore.instance
+              .collection('send_request')
+              .doc(sid)
+              .collection(sid.toString() + '-srequest')
+              .doc(sdoc)
+              .get()
+              .then((DocumentSnapshot element1) {
+            if (element1.exists) {
+              FirebaseFirestore.instance
+                  .collection('faculties')
+                  .doc(element1['sender-id'])
+                  .get()
+                  .then((value) {
+                var name = value['faculty_name'];
+                var photo = value['faculty_pic'];
+                rreqmodel rw = rreqmodel(
+                    reqdate: element1['date'].toDate(),
+                    reqholder: name,
+                    reqid: element1['sender-id'],
+                    reqphoto: photo,
+                    reqslot: element1['slot']);
+                rmode.add(rw);
+              });
+            }
+          });
         }
       });
     });
@@ -85,8 +125,10 @@ class _RequestHomeState extends State<RequestHome> {
               children: <Widget>[
                 MaterialButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Request()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Request(
+                              rmode: List.from(rmode.reversed),
+                            )));
                   },
                   splashColor: Colors.deepOrange,
                   color: Colors.orangeAccent,
@@ -107,7 +149,8 @@ class _RequestHomeState extends State<RequestHome> {
                 MaterialButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RequestSent(smode: smode)));
+                        builder: (context) =>
+                            RequestSent(smode: List.from(smode.reversed))));
                   },
                   splashColor: Colors.deepOrange,
                   color: Colors.orangeAccent,

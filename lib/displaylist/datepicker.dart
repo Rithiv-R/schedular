@@ -82,12 +82,47 @@ class _DatepickState extends State<Datepick> {
                       'slotids': widget.slotids,
                       'status': 0,
                       'trial-id': 0,
+                      'sender-id': widget.mainfac,
                     }))
                     .then((value) => print("User Added"))
                     .catchError((error) => print("Failed to add user: $error"));
                 FirebaseFirestore.instance
                     .collection('send_request')
                     .doc(widget.mainfac)
+                    .update({'count': count});
+              }
+            });
+            FirebaseFirestore.instance
+                .collection('receive_request')
+                .doc(widget.fac_id)
+                .get()
+                .then((DocumentSnapshot documentSnapshot) {
+              if (documentSnapshot.exists) {
+                var count = documentSnapshot['count'];
+
+                CollectionReference users = FirebaseFirestore.instance
+                    .collection('receive_request')
+                    .doc(widget.fac_id)
+                    .collection(widget.fac_id.toString() + '-rrequest');
+                count = count + 1;
+                users
+                    .doc(widget.fac_id.toString() +
+                        '-' +
+                        'rreq' +
+                        count.toString())
+                    .set(({
+                      'sdoc_name': widget.mainfac.toString() +
+                          '-' +
+                          'sreq' +
+                          count.toString(),
+                      'trial-id': 0,
+                      'requester': widget.mainfac,
+                    }))
+                    .then((value) => print("User Added"))
+                    .catchError((error) => print("Failed to add user: $error"));
+                FirebaseFirestore.instance
+                    .collection('receive_request')
+                    .doc(widget.fac_id)
                     .update({'count': count});
               }
             });
