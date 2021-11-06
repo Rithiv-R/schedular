@@ -7,8 +7,10 @@ import 'package:schedular/requestmod/sreqmodel.dart';
 
 class RequestHome extends StatefulWidget {
   var facid;
+  var user;
   RequestHome({
     required this.facid,
+    required this.user,
   });
   @override
   _RequestHomeState createState() => _RequestHomeState();
@@ -30,11 +32,17 @@ class _RequestHomeState extends State<RequestHome> {
       querySnapshot.docs.forEach((element) {
         if (element['trial-id'] == 0) {
           sreqmodel sw = sreqmodel(
-              reqdate: element['date'].toDate(),
-              reqholder: element['faculty_name'],
-              reqid: element['faculty_id'],
-              reqphoto: element['photo'],
-              reqslot: element['slot']);
+            reqcourse: element['course'].toString(),
+            reqstatus: element['status'].toString(),
+            reqdate: element['date'].toDate(),
+            reqholder: element['faculty_name'],
+            reqid: element['faculty_id'],
+            reqphoto: element['photo'],
+            reqslot: element['slot'],
+            reqdocname: element['doc_name'],
+            reqsender: element['sender-id'],
+          );
+
           smode.add(sw);
         }
       });
@@ -69,6 +77,9 @@ class _RequestHomeState extends State<RequestHome> {
                     reqholder: name,
                     reqid: element1['sender-id'],
                     reqphoto: photo,
+                    reqcourse: element1['course'],
+                    reqdocname: sdoc,
+                    reqstatus: element1['status'].toString(),
                     reqslot: element1['slot']);
                 rmode.add(rw);
               });
@@ -127,6 +138,7 @@ class _RequestHomeState extends State<RequestHome> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Request(
+                              user: widget.user,
                               rmode: List.from(rmode.reversed),
                             )));
                   },
@@ -149,8 +161,9 @@ class _RequestHomeState extends State<RequestHome> {
                 MaterialButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            RequestSent(smode: List.from(smode.reversed))));
+                        builder: (context) => RequestSent(
+                            user: widget.user,
+                            smode: List.from(smode.reversed))));
                   },
                   splashColor: Colors.deepOrange,
                   color: Colors.orangeAccent,

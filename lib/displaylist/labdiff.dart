@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/displaylist/datepicker.dart';
-import 'package:schedular/main.dart';
 import 'package:schedular/substitute%20faculty.dart/models.dart';
-
-import 'package:share/share.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class Diff_Fac_lab extends StatefulWidget {
   List<Lab_diff> list;
@@ -77,102 +73,116 @@ class _Diff_Fac_labState extends State<Diff_Fac_lab> {
             )
           : (widget.counter == '1')
               ? Container(
-                  child: ListView.builder(
-                      itemCount: final_list.length,
-                      itemBuilder: (context, index) => Column(
-                            children: <Widget>[
-                              Card(
-                                child: Container(
-                                  height: 100,
-                                  child: Ink(
-                                    color: (facid == final_list[index].facid)
-                                        ? Colors.orangeAccent[200]
-                                        : Colors.white,
-                                    child: Column(
-                                      children: <Widget>[
-                                        Padding(
-                                            padding: EdgeInsets.only(top: 10)),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              this.facid =
-                                                  final_list[index].facid;
-                                            });
-                                          },
-                                          child: ListTile(
-                                            horizontalTitleGap: 25,
-                                            leading: Container(
-                                              child: Image.network(
-                                                final_list[index].photo,
-                                                fit: BoxFit.cover,
-                                                height: 90,
-                                                width: 70,
-                                              ),
-                                            ),
-                                            trailing: IconButton(
-                                                onPressed: () async {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder:
-                                                              (context) =>
-                                                                  Datepick(
-                                                                    slotids: [
-                                                                      widget.id,
-                                                                      widget.id1
-                                                                    ],
-                                                                    finallist:
-                                                                        this.days,
-                                                                    mainfac: widget
-                                                                        .mainfac,
-                                                                    slot: widget
-                                                                        .slot,
-                                                                    course: widget
-                                                                        .course,
-                                                                    fac_name:
-                                                                        final_list[index]
-                                                                            .name,
-                                                                    fac_id: final_list[
-                                                                            index]
-                                                                        .facid,
-                                                                    fac_photo:
-                                                                        final_list[index]
-                                                                            .photo,
-                                                                  )));
-                                                },
-                                                icon: Icon(
-                                                  Icons.send_outlined,
-                                                  color: Colors.green,
-                                                )),
-                                            title: Text(
-                                              final_list[index].facid,
-                                              style: TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              final_list[index].name,
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
+                  child: AnimationLimiter(
+                    child: ListView.builder(
+                        itemCount: final_list.length,
+                        itemBuilder: (context, index) =>
+                            AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(seconds: 1),
+                              child: SlideAnimation(
+                                horizontalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Card(
+                                        child: Container(
+                                          height: 100,
+                                          child: Ink(
+                                            color: (facid ==
+                                                    final_list[index].facid)
+                                                ? Colors.orangeAccent[200]
+                                                : Colors.white,
+                                            child: Column(
+                                              children: <Widget>[
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 10)),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      this.facid =
+                                                          final_list[index]
+                                                              .facid;
+                                                    });
+                                                  },
+                                                  child: ListTile(
+                                                    horizontalTitleGap: 25,
+                                                    leading: Container(
+                                                      child: Image.network(
+                                                        final_list[index].photo,
+                                                        fit: BoxFit.cover,
+                                                        height: 90,
+                                                        width: 70,
+                                                      ),
+                                                    ),
+                                                    trailing: IconButton(
+                                                        onPressed: () async {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Datepick(
+                                                                            slotids: [
+                                                                              widget.id,
+                                                                              widget.id1
+                                                                            ],
+                                                                            finallist:
+                                                                                this.days,
+                                                                            mainfac:
+                                                                                widget.mainfac,
+                                                                            slot:
+                                                                                widget.slot,
+                                                                            course:
+                                                                                widget.course,
+                                                                            fac_name:
+                                                                                final_list[index].name,
+                                                                            fac_id:
+                                                                                final_list[index].facid,
+                                                                            fac_photo:
+                                                                                final_list[index].photo,
+                                                                          )));
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.send_outlined,
+                                                          color: Colors.green,
+                                                        )),
+                                                    title: Text(
+                                                      final_list[index].facid,
+                                                      style: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                    subtitle: Text(
+                                                      final_list[index].name,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    top: 10,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            top: 10,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ],
-                          )),
+                            )),
+                  ),
                 )
               : Container(
                   child: ListView.builder(

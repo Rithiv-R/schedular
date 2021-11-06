@@ -15,6 +15,17 @@ class _SignInState extends State<SignIn> {
   String email = "";
   String password = "";
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      email = '';
+      password = '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

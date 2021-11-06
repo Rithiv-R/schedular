@@ -4,12 +4,20 @@ class sreqmodel {
   var reqid;
   var reqslot;
   var reqdate;
+  var reqstatus;
+  var reqcourse;
+  var reqdocname;
+  var reqsender;
   sreqmodel(
       {required this.reqdate,
       required this.reqholder,
       required this.reqid,
       required this.reqphoto,
-      required this.reqslot});
+      required this.reqstatus,
+      required this.reqcourse,
+      required this.reqslot,
+      required this.reqdocname,
+      required this.reqsender});
 }
 
 class rreqmodel {
@@ -18,10 +26,17 @@ class rreqmodel {
   var reqid;
   var reqslot;
   var reqdate;
-  rreqmodel(
-      {required this.reqdate,
-      required this.reqholder,
-      required this.reqid,
-      required this.reqphoto,
-      required this.reqslot});
+  var reqstatus;
+  var reqcourse;
+  var reqdocname;
+  rreqmodel({
+    required this.reqdate,
+    required this.reqholder,
+    required this.reqid,
+    required this.reqphoto,
+    required this.reqslot,
+    required this.reqcourse,
+    required this.reqdocname,
+    required this.reqstatus,
+  });
 }

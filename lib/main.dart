@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/authentication/signin.dart';
 import 'package:schedular/authentication/signup.dart';
+import 'package:transition/transition.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,8 +81,12 @@ class _MyMainPageState extends State<MyMainPage> {
                     color: Colors.orangeAccent,
                     splashColor: Colors.deepOrange,
                     onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SignIn()));
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: SignIn(),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
                     },
                     height: 60,
                     minWidth: double.infinity,
@@ -103,8 +108,12 @@ class _MyMainPageState extends State<MyMainPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SignUp()));
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: SignUp(),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
                     },
                     color: Colors.orangeAccent,
                     splashColor: Colors.deepOrange,

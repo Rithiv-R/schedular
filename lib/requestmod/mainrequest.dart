@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:schedular/requestmod/requestdetail.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // ignore: must_be_immutable
 class Request extends StatefulWidget {
+  var user;
   var rmode;
-  Request({required this.rmode});
+  Request({required this.user, required this.rmode});
 
   @override
   _RequestState createState() => _RequestState();
@@ -67,94 +69,132 @@ class _RequestState extends State<Request> {
             height: 10,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: widget.rmode.length,
-              itemBuilder: (context, index) => Column(
-                children: <Widget>[
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(35)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+            child: AnimationLimiter(
+              child: ListView.builder(
+                itemCount: widget.rmode.length,
+                itemBuilder: (context, index) =>
+                    AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(seconds: 1),
+                  child: SlideAnimation(
+                    horizontalOffset: 50.0,
+                    child: FadeInAnimation(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    widget.rmode[index].reqphoto,
-                                  ),
-                                  radius: 50,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(35)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
-                                    widget.rmode[index].reqholder,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            widget.rmode[index].reqphoto,
+                                          ),
+                                          radius: 50,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            widget.rmode[index].reqholder,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Text(
+                                            widget.rmode[index].reqid +
+                                                ' - ' +
+                                                widget.rmode[index].reqslot,
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Text(
+                                            DateFormat.yMMMEd().format(
+                                                widget.rmode[index].reqdate),
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Center(
+                                    child: MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      color: Colors.lightBlueAccent,
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RequestDetails(
+                                                      user: widget.user,
+                                                      mode1: [
+                                                        DateFormat.yMMMEd()
+                                                            .format(widget
+                                                                .rmode[index]
+                                                                .reqdate),
+                                                        widget.rmode[index]
+                                                            .reqholder,
+                                                        widget
+                                                            .rmode[index].reqid,
+                                                        widget.rmode[index]
+                                                            .reqphoto,
+                                                        widget.rmode[index]
+                                                            .reqcourse,
+                                                        widget.rmode[index]
+                                                            .reqdocname,
+                                                        widget.rmode[index]
+                                                            .reqstatus,
+                                                        widget.rmode[index]
+                                                            .reqslot
+                                                      ],
+                                                    )));
+                                      },
+                                      child: Text(
+                                        'Received Request Details',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    widget.rmode[index].reqid +
-                                        ' - ' +
-                                        widget.rmode[index].reqslot,
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    DateFormat.yMMMEd()
-                                        .format(widget.rmode[index].reqdate),
-                                    style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
+                                  )
                                 ],
                               ),
-                            ],
-                          ),
-                          Center(
-                            child: MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              color: Colors.lightBlueAccent,
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => RequestDetails()));
-                              },
-                              child: Text(
-                                'Received Request Details',
-                                style: TextStyle(fontSize: 15),
-                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           )

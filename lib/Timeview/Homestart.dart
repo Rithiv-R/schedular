@@ -4,6 +4,7 @@ import 'package:schedular/main.dart';
 
 import 'package:schedular/Timeview/timetabletheory.dart';
 import 'package:schedular/Timeview/timetablelab.dart';
+import 'package:spring/spring.dart';
 
 class HomeStart extends StatefulWidget {
   var user;
@@ -61,47 +62,51 @@ class _HomeStartState extends State<HomeStart> {
               SizedBox(
                 height: 30,
               ),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TimeTable(
-                                  user: widget.user,
-                                  course: course,
-                                )));
-                  },
-                  color: color1,
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('Theory-TimeTable',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
+              Spring.fadeIn(
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TimeTable(
+                                    user: widget.user,
+                                    course: course,
+                                  )));
+                    },
+                    color: color1,
+                    child: Container(
+                        height: 50,
+                        width: 300,
+                        child: Center(
+                            child: Text('Theory-TimeTable',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ))))),
+              ),
               Padding(padding: EdgeInsets.only(top: 20)),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TimeTable1(
-                                  user: widget.user,
-                                  course: course,
-                                )));
-                  },
-                  color: color1,
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('Lab-TimeTable',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
+              Spring.fadeIn(
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TimeTable1(
+                                    user: widget.user,
+                                    course: course,
+                                  )));
+                    },
+                    color: color1,
+                    child: Container(
+                        height: 50,
+                        width: 300,
+                        child: Center(
+                            child: Text('Lab-TimeTable',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ))))),
+              ),
               SizedBox(
                 height: 30,
               ),

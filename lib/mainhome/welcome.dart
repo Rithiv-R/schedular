@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/Timeview/Homestart.dart';
 import 'package:schedular/extra%20class/extra1.dart';
+import 'package:schedular/main.dart';
 import 'package:schedular/requestmod/sreqmodel.dart';
 import 'package:schedular/substitute%20class.dart/sClass2.dart';
 import 'package:schedular/substitute%20faculty.dart/home.dart';
@@ -10,7 +11,7 @@ import 'package:schedular/requestmod/requestHome.dart';
 
 class Welcome extends StatefulWidget {
   var user;
-  Welcome({this.user});
+  Welcome({required this.user});
 
   @override
   _WelcomeState createState() => _WelcomeState();
@@ -57,6 +58,12 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyMainPage()));
+            }),
         backgroundColor: Colors.orangeAccent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -229,8 +236,8 @@ class _WelcomeState extends State<Welcome> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        RequestHome(facid: facid)));
+                                    builder: (context) => RequestHome(
+                                        facid: facid, user: widget.user)));
                           },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
