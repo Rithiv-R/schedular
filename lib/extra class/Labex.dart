@@ -3,21 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:schedular/displaylist/labdiff.dart';
-import 'package:schedular/displaylist/labsame.dart';
+import 'package:schedular/extra%20class/extra2.dart';
 import 'package:schedular/main.dart';
-import 'package:schedular/substitute%20faculty.dart/models.dart';
 
-class Lab extends StatefulWidget {
+class Labextra extends StatefulWidget {
   var user;
   var course;
-  Lab({this.user, this.course});
+  Labextra({this.user, this.course});
 
   @override
   _LabState createState() => _LabState();
 }
 
-class _LabState extends State<Lab> {
+class _LabState extends State<Labextra> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +33,7 @@ class _LabState extends State<Lab> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('LAB SUBSTITUTION'),
+        title: Text('LAB EXTRA CLASS'),
         actions: [
           IconButton(
               onPressed: () {
@@ -66,222 +64,8 @@ class _MySlotState extends State<MySlot> {
   String slot = '';
   String slot1 = '';
   var counter = '0';
-  // ignore: non_constant_identifier_names
-  List<Lab_diff> lab_diff = [];
-  // ignore: non_constant_identifier_names
-  List<Lab_same> lab_same = [];
   String fac = '';
   List slotlist = [];
-  void different() async {
-    var temp = int.parse(slot.substring(
-      1,
-    ));
-    var temp1 = int.parse(slot1.substring(
-      1,
-    ));
-    if (temp % 6 == 0 || temp1 % 6 == 0) {
-      var id2 = '1' +
-          id.substring(
-            1,
-          );
-      var id3 = '1' +
-          id1.substring(1, 3) +
-          (int.parse(id.substring(
-                    3,
-                  )) -
-                  1)
-              .toString();
-      var id4 = '1' +
-          id1.substring(1, 3) +
-          (int.parse(id.substring(
-                    3,
-                  )) +
-                  1)
-              .toString();
-      await FirebaseFirestore.instance
-          .collection('faculties')
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          var subjects = element['subjects'];
-          if (subjects.contains(widget.course)) {
-          } else {
-            var slots = element['slots'];
-            if (slots.contains(id) ||
-                slots.contains(id1) ||
-                slots.contains(id2) ||
-                slots.contains(id3) ||
-                slots.contains(id4)) {
-            } else {
-              setState(() {
-                Lab_diff lb = Lab_diff(
-                  name: element['faculty_name'],
-                  photo: element['faculty_pic'],
-                  facid: element['faculty_id'],
-                );
-                lab_diff.add(lb);
-              });
-              print(element['faculty_name']);
-              print(id2);
-              print(id3);
-              print(id4);
-            }
-          }
-        });
-      });
-    } else {
-      var id2 = '1' +
-          id.substring(
-            1,
-          );
-      var id3 = '1' +
-          id1.substring(
-            1,
-          );
-      await FirebaseFirestore.instance
-          .collection('faculties')
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          var subjects = element['subjects'];
-          if (subjects.contains(widget.course)) {
-          } else {
-            var slots = element['slots'];
-            if (slots.contains(id) ||
-                slots.contains(id1) ||
-                slots.contains(id2) ||
-                slots.contains(id3)) {
-            } else {
-              setState(() {
-                Lab_diff lb = Lab_diff(
-                  name: element['faculty_name'],
-                  photo: element['faculty_pic'],
-                  facid: element['faculty_id'],
-                );
-                lab_diff.add(lb);
-              });
-            }
-          }
-        });
-      });
-    }
-  }
-
-  void same() async {
-    var temp = int.parse(slot.substring(
-      1,
-    ));
-    var temp1 = int.parse(slot1.substring(
-      1,
-    ));
-    if (temp % 6 == 0 || temp1 % 6 == 0) {
-      var id2 = '1' +
-          id.substring(
-            1,
-          );
-      var id3 = '1' +
-          id1.substring(1, 3) +
-          (int.parse(id.substring(
-                    3,
-                  )) -
-                  1)
-              .toString();
-      var id4 = '1' +
-          id1.substring(1, 3) +
-          (int.parse(id.substring(
-                    3,
-                  )) +
-                  1)
-              .toString();
-      await FirebaseFirestore.instance
-          .collection('faculties')
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          var subjects = element['subjects'];
-          if (subjects.contains(widget.course)) {
-            var slots = element['slots'];
-            // ignore: non_constant_identifier_names
-            if (slots.contains(id) ||
-                slots.contains(id1) ||
-                slots.contains(id2) ||
-                slots.contains(id3) ||
-                slots.contains(id4)) {
-            } else {
-              setState(() {
-                if (element['faculty_id'] != fac) {
-                  Lab_same lb1 = Lab_same(
-                    name: element['faculty_name'],
-                    photo: element['faculty_pic'],
-                    facid: element['faculty_id'],
-                  );
-                  lab_same.add(lb1);
-                }
-              });
-              print(element['faculty_name']);
-              print(id2);
-              print(id3);
-              print(id4);
-            }
-          } else {}
-        });
-      });
-    } else {
-      var id2 = '1' +
-          id.substring(
-            1,
-          );
-      var id3 = '1' +
-          id1.substring(
-            1,
-          );
-      await FirebaseFirestore.instance
-          .collection('faculties')
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          var subjects = element['subjects'];
-          if (subjects.contains(widget.course)) {
-            var slots = element['slots'];
-            if (slots.contains(id) ||
-                slots.contains(id1) ||
-                slots.contains(id2) ||
-                slots.contains(id3)) {
-            } else {
-              setState(() {
-                if (element['faculty_id'] != fac) {
-                  Lab_same lb1 = Lab_same(
-                    name: element['faculty_name'],
-                    photo: element['faculty_pic'],
-                    facid: element['faculty_id'],
-                  );
-                  lab_same.add(lb1);
-                }
-              });
-              print(element['faculty_name']);
-            }
-            print(id2);
-            print(id3);
-          } else {}
-        });
-      });
-    }
-  }
-
-  void _overall() async {
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var slots = element['slots'];
-        if (slots.contains(id)) {
-        } else {
-          print(element['faculty_name']);
-        }
-      });
-    });
-  }
 
   @override
   void initState() {
@@ -471,44 +255,70 @@ class _MySlotState extends State<MySlot> {
               Padding(padding: EdgeInsets.only(top: 30)),
               Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    // ignore: deprecated_member_use
                     FlatButton(
                         onPressed: () {
-                          lab_same = [];
-                          same();
-                          SameFaculty(context);
+                          if (slotlist.contains(id) || slotlist.contains(id1)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Extra2(
+                                    slot: this.slot + '+' + this.slot1,
+                                    id: this.fac,
+                                    course: widget.course,
+                                  ),
+                                ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.redAccent,
+                                content: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'slot : ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$slot+$slot1',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'is not there for ${widget.course}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         color: Color(0xff4f6ff0),
                         child: Container(
                             height: 50,
                             width: 300,
                             child: Center(
-                                child: Text('SUBSTITUTION FROM SAME COURSE',
+                                child: Text('FIND FREE SLOTS FOR EXTRA CLASS',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ))))),
                     Padding(padding: EdgeInsets.only(top: 30)),
-                    // ignore: deprecated_member_use
-                    FlatButton(
-                        onPressed: () {
-                          lab_diff = [];
-                          different();
-                          DiffFaculty(context);
-                        },
-                        color: Color(0xff4f6ff0),
-                        child: Container(
-                            height: 50,
-                            width: 300,
-                            child: Center(
-                                child:
-                                    Text('SUBSTITUTION FROM DIFFERENT COURSE',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ))))),
                   ],
                 ),
               ),
@@ -603,8 +413,6 @@ class _MySlotState extends State<MySlot> {
                       onTap: () {
                         var val1;
                         setState(() {
-                          lab_diff.clear();
-                          lab_same.clear();
                           slot = '';
                           slot1 = '';
                           id = '';
@@ -721,116 +529,5 @@ class _MySlotState extends State<MySlot> {
               ],
             ),
           );
-  }
-
-  void SameFaculty(BuildContext context) {
-    var alertDialog = AlertDialog(
-        title: Text(
-          'Message Confirmation!',
-          style: TextStyle(
-              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        content: Text('Are you sure to Substitution from Same Course Faculty?'),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Container(
-              height: 20,
-              width: 25,
-              child: Text(
-                'NO',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Same_Fac_lab(
-                            id: this.id,
-                            id1: this.id1,
-                            list: lab_same,
-                            mainfac: this.fac,
-                            counter: counter,
-                            slot: '${slot}+${slot1}',
-                            course: widget.course,
-                          )));
-            },
-            child: Text(
-              'YES',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          )
-        ]);
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Colors.transparent,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
-  }
-
-  void DiffFaculty(BuildContext context) {
-    var alertDialog = AlertDialog(
-        title: Text(
-          'Message Confirmation!',
-          style: TextStyle(
-              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-            'Are you sure to get Substitution from Different Course Faculty?'),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Container(
-              height: 20,
-              width: 25,
-              child: Text(
-                'NO',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Diff_Fac_lab(
-                            id: this.id,
-                            id1: this.id1,
-                            list: lab_diff,
-                            mainfac: this.fac,
-                            counter: counter,
-                            slot: '${slot}+${slot1}',
-                            course: widget.course,
-                          )));
-            },
-            child: Text(
-              'YES',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          )
-        ]);
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Colors.transparent,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schedular/extra%20class/Labex.dart';
 import 'package:schedular/extra%20class/Theoryex.dart';
 import 'package:schedular/main.dart';
 
@@ -60,7 +61,7 @@ class _MyselectionState extends State<Myselection> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('SUBSTITUTE FACULTY'),
+        title: Text('EXTRA CLASS'),
         actions: [
           IconButton(
               onPressed: () {
@@ -117,7 +118,15 @@ class _MyselectionState extends State<Myselection> {
                                     ))))),
                     Padding(padding: EdgeInsets.only(top: 20)),
                     FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Labextra(
+                                        user: widget.user,
+                                        course: course,
+                                      )));
+                        },
                         color: color1,
                         child: Container(
                             height: 50,
@@ -178,7 +187,7 @@ class _MyselectionState extends State<Myselection> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'PLEASE CHOOSE A SLOT',
+                  'CHOOSE A COURSE',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -194,7 +203,7 @@ class _MyselectionState extends State<Myselection> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Slot Choosen :',
+                  'Choosen :',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

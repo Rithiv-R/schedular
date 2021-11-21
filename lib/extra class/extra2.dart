@@ -2,172 +2,181 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class Extra1 extends StatefulWidget {
+class Extra2 extends StatefulWidget {
   var id;
   var slot;
   var course;
-  Extra1({required this.id, required this.slot, required this.course});
+  Extra2({required this.id, required this.slot, required this.course});
   @override
   _Extra1State createState() => _Extra1State();
 }
 
-class _Extra1State extends State<Extra1> {
+class _Extra1State extends State<Extra2> {
   var students = [];
   var unique = [];
   var free = [];
   var slotsof = [
-    '1111',
-    '1112',
-    '1113',
-    '1114',
-    '1115',
-    '1121',
-    '1122',
-    '1123',
-    '1124',
-    '1125',
-    '1211',
-    '1212',
-    '1213',
-    '1214',
-    '1215',
-    '1221',
-    '1222',
-    '1223',
-    '1224',
-    '1225',
-    '1311',
-    '1312',
-    '1313',
-    '1314',
-    '1315',
-    '1321',
-    '1322',
-    '1323',
-    '1324',
-    '1325',
-    '1411',
-    '1412',
-    '1413',
-    '1414',
-    '1415',
-    '1421',
-    '1422',
-    '1423',
-    '1424',
-    '1425',
-    '1511',
-    '1512',
-    '1513',
-    '1514',
-    '1515',
-    '1521',
-    '1522',
-    '1523',
-    '1524',
-    '1525',
+    '2111',
+    '2112',
+    '2113',
+    '2114',
+    '2115',
+    '2116',
+    '2121',
+    '2122',
+    '2123',
+    '2124',
+    '2125',
+    '2126',
+    '2211',
+    '2212',
+    '2213',
+    '2214',
+    '2215',
+    '2216',
+    '2221',
+    '2222',
+    '2223',
+    '2224',
+    '2225',
+    '2226',
+    '2311',
+    '2312',
+    '2313',
+    '2314',
+    '2315',
+    '2316',
+    '2321',
+    '2322',
+    '2323',
+    '2324',
+    '2325',
+    '2326',
+    '2411',
+    '2412',
+    '2413',
+    '2414',
+    '2415',
+    '2421',
+    '2422',
+    '2423',
+    '2424',
+    '2425',
+    '2426',
+    '2511',
+    '2512',
+    '2513',
+    '2514',
+    '2515',
+    '2516',
+    '2521',
+    '2522',
+    '2523',
+    '2524',
+    '2525',
+    '2526',
   ];
   var slots1 = [
     ['Monday', 'null'],
-    ['A1', '1111'],
-    ['F1', '1112'],
-    ['D1', '1113'],
-    ['TB1', '1114'],
-    ['TG1', '1115'],
-    ['-', 'null'],
+    ['L1', '2111'],
+    ['L2', '2112'],
+    ['L3', '2113'],
+    ['L4', '2114'],
+    ['L5', '2115'],
+    ['L6', '2116'],
     ['Lunch', 'null'],
-    ['A2', '1121'],
-    ['F2', '1122'],
-    ['D2', '1123'],
-    ['TB2', '1124'],
-    ['TG2', '1125'],
+    ['L31', '	2121'],
+    ['L32', '2122'],
+    ['L33', '2123'],
+    ['L34', '2124'],
+    ['L35', '2125'],
+    ['L36', '2126'],
     ['-', 'null'],
-    ['V3', 'null'],
   ];
   var slots2 = [
     ['Tuesday', 'null'],
-    ['B1', '1211'],
-    ['G1', '1212'],
-    ['E1', '1213'],
-    ['TC1', '1214'],
-    ['TAA1', '1215'],
-    ['-', 'null'],
+    ['L7', '2211'],
+    ['L8', '2212'],
+    ['L9', '2213'],
+    ['L10', '2214'],
+    ['L11', '2215'],
+    ['L12', '2216'],
     ['Lunch', 'null'],
-    ['B2', '1221'],
-    ['G2', '1222'],
-    ['E2', '1223'],
-    ['TC2', '1224'],
-    ['TAA2', '1225'],
+    ['L37', '2221'],
+    ['L38', '2222'],
+    ['L39', '2223'],
+    ['L40', '2224'],
+    ['L41', '2225'],
+    ['L42', '2226'],
     ['-', 'null'],
-    ['V4', 'null'],
   ];
   var slots3 = [
     ['Wednesday', 'null'],
-    ['C1', '1311'],
-    ['A1', '1312'],
-    ['F1', '1313'],
-    ['V1', 'null'],
-    ['V2', 'null'],
-    ['-', 'null'],
+    ['L13', '2311'],
+    ['L14', '2312'],
+    ['L15', '2313'],
+    ['L16', '2314'],
+    ['L17', '2315'],
+    ['L18', '2316'],
     ['Lunch', 'null'],
-    ['C2', '1321'],
-    ['A2', '1322'],
-    ['F2', '1323'],
-    ['TD2', '1324'],
-    ['TBB2', '1325'],
+    ['L43', '2321'],
+    ['L44', '2322'],
+    ['L45', '2323'],
+    ['L46', '2324'],
+    ['L47', '2325'],
+    ['L48', '2326'],
     ['-', 'null'],
-    ['V5', 'null'],
   ];
   var slots4 = [
     ['Thursday', 'null'],
-    ['D1', '1411'],
-    ['B1', '1412'],
-    ['G1', '1413'],
-    ['TE1', '1414'],
-    ['TCC1', '1415'],
-    ['-', 'null'],
+    ['L19', '2411'],
+    ['L20', '2412'],
+    ['L21', '2413'],
+    ['L22', '2414'],
+    ['L23', '2415'],
+    ['L24', '2416'],
     ['Lunch', 'null'],
-    ['D2', '1421'],
-    ['B2', '1422'],
-    ['G2', '1423'],
-    ['TE1', '1424'],
-    ['TCC2', '1425'],
+    ['L49', '2421'],
+    ['L50', '2422'],
+    ['L51', '2423'],
+    ['L52', '2424'],
+    ['L53', '2425'],
+    ['L54', '2426'],
     ['-', 'null'],
-    ['V6', 'null'],
   ];
   var slots5 = [
     ['Friday', 'null'],
-    ['E1', '1511'],
-    ['C1', '1512'],
-    ['TA1', '1513'],
-    ['TF1', '1514'],
-    ['TD1', '1515'],
-    ['-', 'null'],
+    ['L25', '2511'],
+    ['L26', '2512'],
+    ['L27', '2513'],
+    ['L28', '2514'],
+    ['L29', '2515'],
+    ['L30', '2516'],
     ['Lunch', 'null'],
-    ['E2', '1521'],
-    ['C2', '1522'],
-    ['TA2', '1523'],
-    ['TF2', '1524'],
-    ['TD2', '1525'],
+    ['L55', '2521'],
+    ['L56', '2522'],
+    ['L57', '2523'],
+    ['L58', '2524'],
+    ['L59', '2525'],
+    ['L60', '2526'],
     ['-', 'null'],
-    ['V7', 'null'],
   ];
   var time = [
     'DAYS',
     '8:00-8:50',
-    '9:00-9:50',
-    '10:00-10:50',
-    '11:00-11:50',
-    '12:00-12:50',
-    '-',
+    '8:51-9:40',
+    '9:51-10:40',
+    '10:41-11:30',
+    '11:40-12:30',
+    '12:31-13:20',
     'Lunch',
     '14:00-14:50',
-    '15:00-15:50',
-    '16:00-16:50',
-    '17:00-17:50',
-    '18:00-18:50',
-    '18:51-19:00',
-    '19:01-19:50',
+    '14:51-15:40',
+    '15:51-16:40',
+    '16:41-17:30',
+    '17:40-18:30',
+    '18:31-19:20',
+    '-',
   ];
   @override
   void initState() {
@@ -195,21 +204,22 @@ class _Extra1State extends State<Extra1> {
               .then((DocumentSnapshot documentSnapshot1) {
             List x = documentSnapshot1['slots'];
             x.forEach((element) {
-              if (element.startsWith('2')) {
-                if (element.endsWith('1')) {
-                  var id1 = '1' +
+              if (element.startsWith('1')) {
+                if (element.endsWith('1') || element.endsWith('5')) {
+                  var id1 = '2' +
                       element.substring(
                         1,
                       );
                   if (!unique.contains(id1)) {
                     unique.add(id1);
                   }
+                } else if (element.endsWith('6')) {
                 } else {
-                  var id1 = '1' +
+                  var id1 = '2' +
                       element.substring(
                         1,
                       );
-                  var id2 = '1' +
+                  var id2 = '2' +
                       element.substring(1, 3) +
                       (int.parse(element.substring(
                                 3,
@@ -229,12 +239,6 @@ class _Extra1State extends State<Extra1> {
                 }
               }
             });
-            /*x.forEach((element) {
-              if (unique.contains(element)) {
-              } else {
-                unique.add(element);
-              }
-            });*/
           });
         });
       });
@@ -249,21 +253,22 @@ class _Extra1State extends State<Extra1> {
         .then((value) {
       List sl = value['slots'];
       sl.forEach((element) {
-        if (element.startsWith('2')) {
-          if (element.endsWith('1')) {
-            var id1 = '1' +
+        if (element.startsWith('1')) {
+          if (element.endsWith('1') || element.endsWith('5')) {
+            var id1 = '2' +
                 element.substring(
                   1,
                 );
             if (!unique.contains(id1)) {
               unique.add(id1);
             }
+          } else if (element.endsWith('6')) {
           } else {
-            var id1 = '1' +
+            var id1 = '2' +
                 element.substring(
                   1,
                 );
-            var id2 = '1' +
+            var id2 = '2' +
                 element.substring(1, 3) +
                 (int.parse(element.substring(
                           3,

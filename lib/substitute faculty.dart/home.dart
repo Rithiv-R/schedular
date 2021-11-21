@@ -186,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'PLEASE CHOOSE A SLOT',
+                  'CHOOSE A COURSE',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Slot Choosen :',
+                  'Choosen :',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

@@ -212,7 +212,11 @@ class _SignUpState extends State<SignUp> {
     super.initState();
     Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
-        counter1 += 1;
+        if (counter1 < 100) {
+          counter1 += 1;
+        } else {
+          counter1 = 0;
+        }
       });
     });
     emailAuth = new EmailAuth(sessionName: "Schedular SignUp Session");

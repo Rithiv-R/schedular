@@ -32,7 +32,11 @@ class _SignInState extends State<SignIn> {
     });
     Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
-        counter1 += 1;
+        if (counter1 < 100) {
+          counter1 += 1;
+        } else {
+          counter1 = 0;
+        }
       });
     });
   }
@@ -170,9 +174,10 @@ class _SignInState extends State<SignIn> {
                                   )));
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
+                            dis1(context, 'No user found for $email.');
                           } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
+                            dis1(context,
+                                'Wrong password provided for the $email.');
                           }
                         }
                       }),
@@ -210,6 +215,37 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+
+  void dis1(
+    BuildContext context,
+    String error,
+  ) {
+    var alertDialog = AlertDialog(
+        title: Text(
+          'ERROR!',
+          style: TextStyle(
+              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        content: Text(error),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 }
 

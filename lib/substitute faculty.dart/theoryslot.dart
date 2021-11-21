@@ -78,86 +78,151 @@ class _MySlotState extends State<MySlot> {
   List<Theory_diff> theory_diff = [];
   List slotlist = [];
   void different() async {
-    var id1 = '2' +
-        id.substring(
-          1,
-        );
-    var id2 = '2' +
-        id.substring(1, 3) +
-        (int.parse(id.substring(
-                  3,
-                )) +
-                1)
-            .toString();
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains(widget.course)) {
-        } else {
-          var slots = element['slots'];
-          if (slots.contains(id) ||
-              slots.contains(id1) ||
-              slots.contains(id2)) {
+    if (!id.endsWith('1')) {
+      var id1 = '2' +
+          id.substring(
+            1,
+          );
+      var id2 = '2' +
+          id.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) +
+                  1)
+              .toString();
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains(widget.course)) {
           } else {
-            setState(() {
-              if (element['faculty_id'] == fac) {
-              } else {
-                Theory_diff lb = Theory_diff(
+            var slots = element['slots'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2)) {
+            } else {
+              setState(() {
+                if (element['faculty_id'] == fac) {
+                } else {
+                  Theory_diff lb = Theory_diff(
+                    name: element['faculty_name'],
+                    photo: element['faculty_pic'],
+                    facid: element['faculty_id'],
+                  );
+                  theory_diff.add(lb);
+                }
+              });
+              print(element['faculty_name']);
+            }
+          }
+        });
+      });
+    } else {
+      var id1 = '2' +
+          id.substring(
+            1,
+          );
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains(widget.course)) {
+          } else {
+            var slots = element['slots'];
+            if (slots.contains(id) || slots.contains(id1)) {
+            } else {
+              setState(() {
+                if (element['faculty_id'] == fac) {
+                } else {
+                  Theory_diff lb = Theory_diff(
+                    name: element['faculty_name'],
+                    photo: element['faculty_pic'],
+                    facid: element['faculty_id'],
+                  );
+                  theory_diff.add(lb);
+                }
+              });
+              print(element['faculty_name']);
+            }
+          }
+        });
+      });
+    }
+  }
+
+  void same() async {
+    if (!id.endsWith('1')) {
+      var id1 = '2' +
+          id.substring(
+            1,
+          );
+      var id2 = '2' +
+          id.substring(1, 3) +
+          (int.parse(id.substring(
+                    3,
+                  )) +
+                  1)
+              .toString();
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains(widget.course)) {
+            var slots = element['slots'];
+            var faculty_id = element['faculty_id'];
+            if (slots.contains(id) ||
+                slots.contains(id1) ||
+                slots.contains(id2)) {
+            } else if (faculty_id == fac) {
+            } else {
+              setState(() {
+                Theory_same lb1 = Theory_same(
                   name: element['faculty_name'],
                   photo: element['faculty_pic'],
                   facid: element['faculty_id'],
                 );
-                theory_diff.add(lb);
-              }
-            });
-            print(element['faculty_name']);
-          }
-        }
+                theory_same.add(lb1);
+              });
+            }
+          } else {}
+        });
       });
-    });
-  }
-
-  void same() async {
-    var id1 = '2' +
-        id.substring(
-          1,
-        );
-    var id2 = '2' +
-        id.substring(1, 3) +
-        (int.parse(id.substring(
-                  3,
-                )) +
-                1)
-            .toString();
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains(widget.course)) {
-          var slots = element['slots'];
-          var faculty_id = element['faculty_id'];
-          if (slots.contains(id) ||
-              slots.contains(id1) ||
-              slots.contains(id2)) {
-          } else if (faculty_id == fac) {
-          } else {
-            setState(() {
-              Theory_same lb1 = Theory_same(
-                name: element['faculty_name'],
-                photo: element['faculty_pic'],
-                facid: element['faculty_id'],
-              );
-              theory_same.add(lb1);
-            });
-          }
-        } else {}
+    } else {
+      var id1 = '2' +
+          id.substring(
+            1,
+          );
+      await FirebaseFirestore.instance
+          .collection('faculties')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          var subjects = element['subjects'];
+          if (subjects.contains(widget.course)) {
+            var slots = element['slots'];
+            var faculty_id = element['faculty_id'];
+            if (slots.contains(id) || slots.contains(id1)) {
+            } else if (faculty_id == fac) {
+            } else {
+              setState(() {
+                Theory_same lb1 = Theory_same(
+                  name: element['faculty_name'],
+                  photo: element['faculty_pic'],
+                  facid: element['faculty_id'],
+                );
+                theory_same.add(lb1);
+              });
+            }
+          } else {}
+        });
       });
-    });
+    }
   }
 
   // ignore: unused_element

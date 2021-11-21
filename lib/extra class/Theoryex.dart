@@ -31,7 +31,7 @@ class _TheoryextraState extends State<Theoryextra> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('THEORY EXTRA CLASS SCHEDULAR'),
+        title: Text('THEORY EXTRA CLASS'),
         actions: [
           IconButton(
               onPressed: () {

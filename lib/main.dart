@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/authentication/signin.dart';
 import 'package:schedular/authentication/signup.dart';
+import 'package:schedular/splash.dart';
 import 'package:transition/transition.dart';
 
 Future<void> main() async {
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.orangeAccent,
       ),
-      home: MyMainPage(),
+      home: SplashScreen(),
     );
   }
 }
@@ -41,7 +40,6 @@ class _MyMainPageState extends State<MyMainPage> {
     'https://image.freepik.com/free-vector/online-tutorials-concept_52683-37480.jpg',
   ];
   int counter1 = 0;
-  late Timer _timer;
   @override
   void initState() {
     // TODO: implement initState
@@ -73,16 +71,29 @@ class _MyMainPageState extends State<MyMainPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text(
-                    'Scheduler',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45,
-                      color: Color(0xffe89821),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      new Image.asset(
+                        'assets/Schedular.jpeg',
+                        width: 55.0,
+                        height: 65.0,
+                        fit: BoxFit.cover,
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 15)),
+                      Text(
+                        'Scheduler',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 45,
+                          color: Color(0xffe89821),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Text(
                     'Faculty and Extra Class Scheduler',
