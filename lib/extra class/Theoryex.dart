@@ -1,25 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:schedular/displaylist/theorydiff.dart';
+import 'package:schedular/extra%20class/extra1.dart';
 import 'package:schedular/main.dart';
 
-import '../displaylist/theorysame.dart';
-import 'models.dart';
-
-// ignore: must_be_immutable
-class Theory extends StatefulWidget {
+class Theoryextra extends StatefulWidget {
   var user;
   var course;
-  Theory({this.user, this.course});
-
+  Theoryextra({required this.user, required this.course});
   @override
-  _TheoryState createState() => _TheoryState();
+  _TheoryextraState createState() => _TheoryextraState();
 }
 
-class _TheoryState extends State<Theory> {
+class _TheoryextraState extends State<Theoryextra> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +31,7 @@ class _TheoryState extends State<Theory> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('THEORY SUBSTITUTION'),
+        title: Text('THEORY EXTRA CLASS SCHEDULAR'),
         actions: [
           IconButton(
               onPressed: () {
@@ -72,109 +66,7 @@ class _MySlotState extends State<MySlot> {
   String slot = '';
   String fac = '';
   var counter = '0';
-  // ignore: non_constant_identifier_names
-  List<Theory_same> theory_same = [];
-  // ignore: non_constant_identifier_names
-  List<Theory_diff> theory_diff = [];
   List slotlist = [];
-  void different() async {
-    var id1 = '2' +
-        id.substring(
-          1,
-        );
-    var id2 = '2' +
-        id.substring(1, 3) +
-        (int.parse(id.substring(
-                  3,
-                )) +
-                1)
-            .toString();
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains(widget.course)) {
-        } else {
-          var slots = element['slots'];
-          if (slots.contains(id) ||
-              slots.contains(id1) ||
-              slots.contains(id2)) {
-          } else {
-            setState(() {
-              if (element['faculty_id'] == fac) {
-              } else {
-                Theory_diff lb = Theory_diff(
-                  name: element['faculty_name'],
-                  photo: element['faculty_pic'],
-                  facid: element['faculty_id'],
-                );
-                theory_diff.add(lb);
-              }
-            });
-            print(element['faculty_name']);
-          }
-        }
-      });
-    });
-  }
-
-  void same() async {
-    var id1 = '2' +
-        id.substring(
-          1,
-        );
-    var id2 = '2' +
-        id.substring(1, 3) +
-        (int.parse(id.substring(
-                  3,
-                )) +
-                1)
-            .toString();
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var subjects = element['subjects'];
-        if (subjects.contains(widget.course)) {
-          var slots = element['slots'];
-          var faculty_id = element['faculty_id'];
-          if (slots.contains(id) ||
-              slots.contains(id1) ||
-              slots.contains(id2)) {
-          } else if (faculty_id == fac) {
-          } else {
-            setState(() {
-              Theory_same lb1 = Theory_same(
-                name: element['faculty_name'],
-                photo: element['faculty_pic'],
-                facid: element['faculty_id'],
-              );
-              theory_same.add(lb1);
-            });
-          }
-        } else {}
-      });
-    });
-  }
-
-  // ignore: unused_element
-  void _overall() async {
-    await FirebaseFirestore.instance
-        .collection('faculties')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        var slots = element['slots'];
-        if (slots.contains(id)) {
-        } else {
-          print(element['faculty_name']);
-        }
-      });
-    });
-  }
 
   void store() async {
     await FirebaseFirestore.instance
@@ -303,11 +195,8 @@ class _MySlotState extends State<MySlot> {
       '18:51-19:00',
       '19:01-19:50',
     ];
-    return (slotlist.isEmpty)
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : Column(
+    return (slotlist.isNotEmpty)
+        ? Column(
             children: <Widget>[
               Container(
                 height: 150,
@@ -369,42 +258,74 @@ class _MySlotState extends State<MySlot> {
                   children: <Widget>[
                     FlatButton(
                         onPressed: () {
-                          theory_same = [];
-                          same();
-                          SameFaculty(context);
+                          if (slotlist.contains(id)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Extra1(
+                                    slot: this.slot,
+                                    id: this.fac,
+                                    course: widget.course,
+                                  ),
+                                ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.redAccent,
+                                content: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'You don\'t have slot : ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$slot',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          ' for the ${widget.course}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         color: Color(0xff4f6ff0),
                         child: Container(
                             height: 50,
                             width: 300,
                             child: Center(
-                                child: Text('SUBSTITUTION FROM SAME COURSE',
+                                child: Text('FIND FREE SLOTS FOR EXTRA CLASS',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ))))),
                     Padding(padding: EdgeInsets.only(top: 30)),
-                    FlatButton(
-                        onPressed: () {
-                          theory_diff = [];
-                          different();
-                          DiffFaculty(context);
-                        },
-                        color: Color(0xff4f6ff0),
-                        child: Container(
-                            height: 50,
-                            width: 300,
-                            child: Center(
-                                child:
-                                    Text('SUBSTITUTION FROM DIFFERENT COURSE',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ))))),
                   ],
                 ),
               ),
             ],
+          )
+        : Center(
+            child: CircularProgressIndicator(),
           );
   }
 
@@ -437,36 +358,25 @@ class _MySlotState extends State<MySlot> {
   Widget Timings(List<String> slots) {
     return Container(
       height: 60,
-      child: AnimationLimiter(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: slots.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(seconds: 1),
-            child: SlideAnimation(
-              horizontalOffset: 100.0,
-              child: FadeInAnimation(
-                child: new Column(
-                  children: <Widget>[
-                    Container(
-                      height: 60,
-                      width: 100,
-                      child: Card(
-                        elevation: 1,
-                        color: Tile1(index),
-                        child: Center(
-                          child: Text(slots[index]),
-                        ),
-                      ),
-                    )
-                  ],
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: slots.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) => new Column(
+          children: <Widget>[
+            Container(
+              height: 60,
+              width: 100,
+              child: Card(
+                elevation: 1,
+                color: Tile1(index),
+                child: Center(
+                  child: Text(slots[index]),
                 ),
               ),
-            ),
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -483,7 +393,7 @@ class _MySlotState extends State<MySlot> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
             position: index,
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
@@ -574,114 +484,5 @@ class _MySlotState extends State<MySlot> {
               ],
             ),
           );
-  }
-
-  void SameFaculty(BuildContext context) {
-    var alertDialog = AlertDialog(
-        title: Text(
-          'Message Confirmation!',
-          style: TextStyle(
-              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        content: Text('Are you sure to Substitution from Same Course Faculty?'),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Container(
-              height: 20,
-              width: 25,
-              child: Text(
-                'NO',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Same_Fac_Theory(
-                            id: this.id,
-                            mainfac: this.fac,
-                            list: theory_same,
-                            counter: counter,
-                            slot: slot,
-                            course: widget.course,
-                          )));
-            },
-            child: Text(
-              'YES',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          )
-        ]);
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Colors.transparent,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
-  }
-
-  void DiffFaculty(BuildContext context) {
-    var alertDialog = AlertDialog(
-        title: Text(
-          'Message Confirmation!',
-          style: TextStyle(
-              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-            'Are you sure to get Substitution from Different Course Faculty?'),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Container(
-              height: 20,
-              width: 25,
-              child: Text(
-                'NO',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              this.counter = (this.slotlist.contains(this.id)) ? '1' : '0';
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Diff_Fac_Theory(
-                            id: this.id,
-                            mainfac: this.fac,
-                            list: theory_diff,
-                            counter: counter,
-                            slot: slot,
-                            course: widget.course,
-                          )));
-            },
-            child: Text(
-              'YES',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          )
-        ]);
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Colors.transparent,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
   }
 }

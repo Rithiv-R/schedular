@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schedular/authentication/signin.dart';
+import 'package:email_auth/email_auth.dart';
+import 'package:schedular/mainhome/welcome.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -182,7 +186,44 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   String email = "";
   String password = "";
+  String otp = "";
   FirebaseAuth auth = FirebaseAuth.instance;
+  List array = [
+    'https://image.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg',
+    'https://image.freepik.com/free-vector/sign-concept-illustration_114360-125.jpg',
+  ];
+  int counter1 = 0;
+  int counter = 0;
+  String error = "";
+  bool result = false;
+  late EmailAuth emailAuth;
+  void sendOTP() async {
+    result = await emailAuth.sendOtp(recipientMail: email, otpLength: 4);
+    if (result) {
+      dis(context, 'OTP sent to mail sent Successful');
+    } else {
+      dis(context, 'OTP can\'t be sent to $email sent');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        counter1 += 1;
+      });
+    });
+    emailAuth = new EmailAuth(sessionName: "Schedular SignUp Session");
+  }
+
+  Widget Mywidget() {
+    return (counter1 % 2 == 0)
+        ? Image.network(array[1], fit: BoxFit.fill)
+        : Image.network(array[0], fit: BoxFit.fill);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,7 +256,7 @@ class _SignUpState extends State<SignUp> {
               Column(
                 children: <Widget>[
                   Text(
-                    "Sign up",
+                    "Sign Up",
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -234,10 +275,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 height: 300,
                 width: 290,
-                child: Image.network(
-                  'https://image.freepik.com/free-vector/log-into-several-devices-responsive-app-design-wifi-zone-gadgets-online-communication-social-networking-web-connection-initialize-sign-up-vector-isolated-concept-metaphor-illustration_335657-4301.jpg',
-                  fit: BoxFit.fill,
-                ),
+                child: Mywidget(),
               ),
               SizedBox(
                 height: 30,
@@ -256,29 +294,169 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
               ),
+              (counter == 1)
+                  ? Column(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            child: TextField(
+                              obscureText: true,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                hintText: 'password',
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  password = value.trim();
+                                });
+                              },
+                            )),
+                      ],
+                    )
+                  : Container(),
+              (counter == 2)
+                  ? Column(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            child: TextField(
+                              obscureText: true,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                hintText: 'OTP',
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  otp = value.trim();
+                                });
+                              },
+                            )),
+                      ],
+                    )
+                  : Container(),
               SizedBox(
                 height: 60,
               ),
-              MaterialButton(
-                  height: 60,
-                  minWidth: 200,
-                  child: Text(
-                    "REGISTER",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  color: Colors.orangeAccent,
-                  splashColor: Colors.deepOrange,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  onPressed: () {
-                    Checker();
-                  }),
+              (counter == 0)
+                  ? MaterialButton(
+                      height: 60,
+                      minWidth: 200,
+                      child: Text(
+                        "SEND OTP",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Colors.orangeAccent,
+                      splashColor: Colors.deepOrange,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('faculties')
+                            .get()
+                            .then((QuerySnapshot querySnapshot) {
+                          querySnapshot.docs.forEach((element) async {
+                            if (element['mail_id'] == email) {
+                              setState(() {
+                                sendOTP();
+                                counter = 2;
+                              });
+                            }
+                          });
+                        });
+                        if (counter != 2) {
+                          dis(context,
+                              'Contact Adminstrator since your email is not allocated in Schedular');
+                        }
+                      })
+                  : (counter == 1)
+                      ? MaterialButton(
+                          height: 60,
+                          minWidth: 200,
+                          child: Text(
+                            "REGISTER",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Colors.orangeAccent,
+                          splashColor: Colors.deepOrange,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection('faculties')
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              querySnapshot.docs.forEach((element) async {
+                                if (element['mail_id'] == email) {
+                                  try {
+                                    await FirebaseAuth.instance
+                                        .createUserWithEmailAndPassword(
+                                            email: email, password: password)
+                                        .then((_) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Welcome(user: email)));
+                                    });
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'weak-password') {
+                                      error =
+                                          'The password provided is too weak.';
+                                      dis1(context, error);
+                                    } else if (e.code ==
+                                        'email-already-in-use') {
+                                      error =
+                                          'The account already exists for this $email.';
+                                      Errodis(context, error);
+                                    }
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                }
+                              });
+                            });
+                          })
+                      : MaterialButton(
+                          height: 60,
+                          minWidth: 200,
+                          child: Text(
+                            "VERIFY",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Colors.orangeAccent,
+                          splashColor: Colors.deepOrange,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          onPressed: () async {
+                            var res = emailAuth.validateOtp(
+                                recipientMail: email, userOtp: otp);
+                            if (res) {
+                              setState(() {
+                                counter = 1;
+                              });
+                            } else {
+                              counter = 0;
+                              dis(context, 'Wrong OTP Entered');
+                            }
+                          }),
               SizedBox(
                 height: 30,
               ),
@@ -302,7 +480,7 @@ class _SignUpState extends State<SignUp> {
                         fontSize: 20,
                       ),
                     ),
-                  )
+                  ),
                 ],
               )
             ],
@@ -312,23 +490,99 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void Checker() async {
-    var counter = 0;
-    await FirebaseFirestore.instance
-        .collection('committee')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        if (element['mail_id'] == email) {
-          counter = 1;
-          password = element['password'];
-        }
-      });
-    });
-    if (counter == 1) {
-      auth.createUserWithEmailAndPassword(email: email, password: password);
-      auth.sendPasswordResetEmail(email: email);
-      Navigator.of(context).pop();
-    }
+  void Errodis(
+    BuildContext context,
+    String error,
+  ) {
+    var alertDialog = AlertDialog(
+        title: Text(
+          'ERROR!',
+          style: TextStyle(
+              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        content: Text(error),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() {
+                counter = 0;
+              });
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
+  }
+
+  void dis(
+    BuildContext context,
+    String error,
+  ) {
+    var alertDialog = AlertDialog(
+        title: Text(
+          'MAIL VERIFICATION!',
+          style: TextStyle(
+              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        content: Text(error),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
+  }
+
+  void dis1(
+    BuildContext context,
+    String error,
+  ) {
+    var alertDialog = AlertDialog(
+        title: Text(
+          'ERROR!',
+          style: TextStyle(
+              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        content: Text(error),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 }

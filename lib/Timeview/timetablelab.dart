@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:schedular/substitute%20faculty.dart/models.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // ignore: must_be_immutable
 class TimeTable1 extends StatefulWidget {
@@ -77,7 +78,9 @@ class _MySlotState extends State<MySlot> {
           }
           courses.forEach((element) {
             element[1].forEach((val) {
-              courses1[val] = element[0];
+              setState(() {
+                courses1[val] = element[0];
+              });
             });
           });
         }
@@ -205,33 +208,35 @@ class _MySlotState extends State<MySlot> {
                   image: NetworkImage(
                       'https://image.freepik.com/free-vector/hand-drawn-back-school-timetable_23-2148608172.jpg'),
                   fit: BoxFit.cover)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      print(courses1);
-                      setState(() {
-                        this.slot = "";
-                        this.slot1 = "";
-                        this.id = "";
-                        this.id1 = "";
-                      });
-                    },
-                    child: Text(
-                      'REFRESH',
-                      style: TextStyle(color: Colors.white),
+          child: (courses1.isEmpty)
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            print(courses1);
+                            setState(() {
+                              this.slot = "";
+                              this.slot1 = "";
+                              this.id = "";
+                              this.id1 = "";
+                            });
+                          },
+                          child: Text(
+                            'REFRESH',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.blue,
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 30)),
+                      ],
                     ),
-                    color: Colors.blue,
-                  ),
-                  Padding(padding: EdgeInsets.only(right: 30)),
-                ],
-              ),
-            ],
-          ),
+                  ],
+                ),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -313,52 +318,64 @@ class _MySlotState extends State<MySlot> {
   Widget TimeTable(var slots) {
     return Container(
       height: 70,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: slots.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => new Column(
-          children: <Widget>[
-            InkResponse(
-              onTap: () {
-                setState(() {
-                  slot = '';
-                  slot1 = '';
-                  id = '';
-                  id1 = '';
-                });
-              },
-              child: Container(
-                height: 70,
-                width: 100,
-                child: Card(
-                  color: (slot.contains(slots[index][1]))
-                      ? Color(0xff66de33)
-                      : Tile(index, slots[index][1]),
-                  child: Center(
-                    child: (courses1.containsKey(slots[index][1]))
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                slots[index][0],
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                courses1[slots[index][1]],
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )
-                        : Text(slots[index][0]),
-                  ),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: slots.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+            position: index,
+            duration: Duration(seconds: 1),
+            child: SlideAnimation(
+              horizontalOffset: 100.0,
+              child: FadeInAnimation(
+                child: new Column(
+                  children: <Widget>[
+                    InkResponse(
+                      onTap: () {
+                        setState(() {
+                          slot = '';
+                          slot1 = '';
+                          id = '';
+                          id1 = '';
+                        });
+                      },
+                      child: Container(
+                        height: 70,
+                        width: 100,
+                        child: Card(
+                          color: (slot.contains(slots[index][1]))
+                              ? Color(0xff66de33)
+                              : Tile(index, slots[index][1]),
+                          child: Center(
+                            child: (courses1.containsKey(slots[index][1]))
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        slots[index][0],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        courses1[slots[index][1]],
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )
+                                : Text(slots[index][0]),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +17,11 @@ class _SignInState extends State<SignIn> {
   String email = "";
   String password = "";
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  List array = [
+    'https://image.freepik.com/free-vector/communication-flat-icon_1262-18771.jpg',
+    'https://image.freepik.com/free-vector/online-registration-sign-up-concept-with-man-character_268404-98.jpg',
+  ];
+  int counter1 = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -24,6 +30,27 @@ class _SignInState extends State<SignIn> {
       email = '';
       password = '';
     });
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        counter1 += 1;
+      });
+    });
+  }
+
+  Widget Mywidget() {
+    return (counter1 % 2 == 0)
+        ? Image.network(
+            array[1],
+            fit: BoxFit.cover,
+            height: 200,
+            width: 200,
+          )
+        : Image.network(
+            array[0],
+            fit: BoxFit.cover,
+            height: 200,
+            width: 200,
+          );
   }
 
   @override
@@ -69,12 +96,7 @@ class _SignInState extends State<SignIn> {
             ),
             Padding(padding: EdgeInsets.only(top: 20)),
             Container(
-              child: Image.network(
-                'https://image.freepik.com/free-vector/online-registration-sign-up-concept-with-man-character_268404-98.jpg',
-                fit: BoxFit.cover,
-                height: 200,
-                width: 200,
-              ),
+              child: Mywidget(),
             ),
             SizedBox(
               height: 60,
@@ -135,17 +157,24 @@ class _SignInState extends State<SignIn> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      onPressed: () {
-                        var user = FirebaseAuth.instance.currentUser;
-                        auth
-                            .signInWithEmailAndPassword(
-                                email: email, password: password)
-                            .then((_) =>
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Welcome(
-                                    user: user!.email,
-                                  ),
-                                )));
+                      onPressed: () async {
+                        try {
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: email, password: password)
+                              .then((_) =>
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Welcome(
+                                      user: email,
+                                    ),
+                                  )));
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
                       }),
                 )
               ],

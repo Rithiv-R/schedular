@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:schedular/displaylist/labdiff.dart';
 import 'package:schedular/displaylist/labsame.dart';
 import 'package:schedular/main.dart';
@@ -297,12 +298,13 @@ class _MySlotState extends State<MySlot> {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((element) {
         if (widget.user == element['mail_id']) {
-          this.slotlist = element[widget.course];
-          this.fac = element['faculty_id'];
+          setState(() {
+            this.slotlist = element[widget.course];
+            this.fac = element['faculty_id'];
+          });
         }
       });
     });
-    print(slotlist);
   }
 
   @override
@@ -409,106 +411,109 @@ class _MySlotState extends State<MySlot> {
       '18:31-19:20',
       '-',
     ];
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 150,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(
-                      'https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg'),
-                  fit: BoxFit.cover)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return (slotlist.isEmpty)
+        ? Center(child: CircularProgressIndicator())
+        : Column(
             children: <Widget>[
-              showSlot(),
-              Padding(padding: EdgeInsets.only(top: 10)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      setState(() {
-                        this.slot = "";
-                        this.slot1 = "";
-                        this.id = "";
-                        this.id1 = "";
-                      });
-                    },
-                    child: Text(
-                      'REFRESH',
-                      style: TextStyle(color: Colors.white),
+              Container(
+                height: 150,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            'https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg'),
+                        fit: BoxFit.cover)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    showSlot(),
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            setState(() {
+                              this.slot = "";
+                              this.slot1 = "";
+                              this.id = "";
+                              this.id1 = "";
+                            });
+                          },
+                          child: Text(
+                            'REFRESH',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.blue,
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 30)),
+                      ],
                     ),
-                    color: Colors.blue,
-                  ),
-                  Padding(padding: EdgeInsets.only(right: 30)),
-                ],
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Timings(time),
-                  TimeTable(slots1),
-                  TimeTable(slots2),
-                  TimeTable(slots3),
-                  TimeTable(slots4),
-                  TimeTable(slots5),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Timings(time),
+                        TimeTable(slots1),
+                        TimeTable(slots2),
+                        TimeTable(slots3),
+                        TimeTable(slots4),
+                        TimeTable(slots5),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        Padding(padding: EdgeInsets.only(top: 30)),
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // ignore: deprecated_member_use
-              FlatButton(
-                  onPressed: () {
-                    lab_same = [];
-                    same();
-                    SameFaculty(context);
-                  },
-                  color: Color(0xff4f6ff0),
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('SUBSTITUTION FROM SAME COURSE',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
               Padding(padding: EdgeInsets.only(top: 30)),
-              // ignore: deprecated_member_use
-              FlatButton(
-                  onPressed: () {
-                    lab_diff = [];
-                    different();
-                    DiffFaculty(context);
-                  },
-                  color: Color(0xff4f6ff0),
-                  child: Container(
-                      height: 50,
-                      width: 300,
-                      child: Center(
-                          child: Text('SUBSTITUTION FROM DIFFERENT COURSE',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))))),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                        onPressed: () {
+                          lab_same = [];
+                          same();
+                          SameFaculty(context);
+                        },
+                        color: Color(0xff4f6ff0),
+                        child: Container(
+                            height: 50,
+                            width: 300,
+                            child: Center(
+                                child: Text('SUBSTITUTION FROM SAME COURSE',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ))))),
+                    Padding(padding: EdgeInsets.only(top: 30)),
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                        onPressed: () {
+                          lab_diff = [];
+                          different();
+                          DiffFaculty(context);
+                        },
+                        color: Color(0xff4f6ff0),
+                        child: Container(
+                            height: 50,
+                            width: 300,
+                            child: Center(
+                                child:
+                                    Text('SUBSTITUTION FROM DIFFERENT COURSE',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ))))),
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   // ignore: non_constant_identifier_names
@@ -542,25 +547,36 @@ class _MySlotState extends State<MySlot> {
   Widget Timings(List<String> slots) {
     return Container(
       height: 60,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: slots.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => new Column(
-          children: <Widget>[
-            Container(
-              height: 60,
-              width: 100,
-              child: Card(
-                elevation: 1,
-                color: Tile1(index),
-                child: Center(
-                  child: Text(slots[index]),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: slots.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(seconds: 1),
+            child: SlideAnimation(
+              horizontalOffset: 100.0,
+              child: FadeInAnimation(
+                child: new Column(
+                  children: <Widget>[
+                    Container(
+                      height: 60,
+                      width: 100,
+                      child: Card(
+                        elevation: 1,
+                        color: Tile1(index),
+                        child: Center(
+                          child: Text(slots[index]),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );
@@ -569,56 +585,67 @@ class _MySlotState extends State<MySlot> {
   Widget TimeTable(var slots) {
     return Container(
       height: 70,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: slots.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => new Column(
-          children: <Widget>[
-            InkResponse(
-              onTap: () {
-                var val1;
-                setState(() {
-                  lab_diff.clear();
-                  lab_same.clear();
-                  slot = '';
-                  slot1 = '';
-                  id = '';
-                  id1 = '';
-                });
-                if (index > 0 && index < 7) {
-                  if (index % 2 != 0) {
-                    val1 = index + 1;
-                  } else {
-                    val1 = index - 1;
-                  }
-                  _slotfinder(slots[index][1], slots[index][0], slots[val1][1],
-                      slots[val1][0]);
-                } else if (index > 7 && index < 14) {
-                  if (index % 2 == 0) {
-                    val1 = index + 1;
-                  } else {
-                    val1 = index - 1;
-                  }
-                  _slotfinder(slots[index][1], slots[index][0], slots[val1][1],
-                      slots[val1][0]);
-                }
-              },
-              child: Container(
-                height: 70,
-                width: 100,
-                child: Card(
-                  color: (slot.contains(slots[index][1]))
-                      ? Color(0xff66de33)
-                      : Tile(index, slots[index][1]),
-                  child: Center(
-                    child: Text(slots[index][0]),
-                  ),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: slots.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(seconds: 1),
+            child: SlideAnimation(
+              horizontalOffset: 100.0,
+              child: FadeInAnimation(
+                child: new Column(
+                  children: <Widget>[
+                    InkResponse(
+                      onTap: () {
+                        var val1;
+                        setState(() {
+                          lab_diff.clear();
+                          lab_same.clear();
+                          slot = '';
+                          slot1 = '';
+                          id = '';
+                          id1 = '';
+                        });
+                        if (index > 0 && index < 7) {
+                          if (index % 2 != 0) {
+                            val1 = index + 1;
+                          } else {
+                            val1 = index - 1;
+                          }
+                          _slotfinder(slots[index][1], slots[index][0],
+                              slots[val1][1], slots[val1][0]);
+                        } else if (index > 7 && index < 14) {
+                          if (index % 2 == 0) {
+                            val1 = index + 1;
+                          } else {
+                            val1 = index - 1;
+                          }
+                          _slotfinder(slots[index][1], slots[index][0],
+                              slots[val1][1], slots[val1][0]);
+                        }
+                      },
+                      child: Container(
+                        height: 70,
+                        width: 100,
+                        child: Card(
+                          color: (slot.contains(slots[index][1]))
+                              ? Color(0xff66de33)
+                              : Tile(index, slots[index][1]),
+                          child: Center(
+                            child: Text(slots[index][0]),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

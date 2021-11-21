@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:schedular/substitute%20faculty.dart/labslot.dart';
+import 'package:schedular/extra%20class/Theoryex.dart';
 import 'package:schedular/main.dart';
-import 'package:schedular/substitute%20faculty.dart/theoryslot.dart';
-import 'package:schedular/Timeview/timetabletheory.dart';
-import 'package:schedular/Timeview/timetablelab.dart';
 
-class MyHomePage extends StatefulWidget {
+class Myselection extends StatefulWidget {
   var user;
-  MyHomePage({this.user});
+  Myselection({this.user});
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyselectionState createState() => _MyselectionState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyselectionState extends State<Myselection> {
   List<String> slotlist = [];
   String id = "";
   String course = "";
@@ -74,9 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.logout_sharp)),
         ],
       ),
-      body: (slotlist.isEmpty)
-          ? Center(child: CircularProgressIndicator())
-          : Container(
+      body: (slotlist.isNotEmpty)
+          ? Container(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -100,10 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     FlatButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Theory(
+                                  builder: (context) => Theoryextra(
                                         user: widget.user,
                                         course: course,
                                       )));
@@ -113,28 +110,20 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 50,
                             width: 300,
                             child: Center(
-                                child: Text('FIND SUBSTITUTION FOR THEORY SLOT',
+                                child: Text('EXTRA CLASS FOR THEORY',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ))))),
                     Padding(padding: EdgeInsets.only(top: 20)),
                     FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Lab(
-                                        user: widget.user,
-                                        course: course,
-                                      )));
-                        },
+                        onPressed: () {},
                         color: color1,
                         child: Container(
                             height: 50,
                             width: 300,
                             child: Center(
-                                child: Text('FIND SUBSTITUTION FOR LAB SLOT',
+                                child: Text('EXTRA CLASS FOR LAB',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -175,6 +164,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
             ),
     );
   }

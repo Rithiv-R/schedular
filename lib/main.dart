@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -33,6 +36,29 @@ class MyMainPage extends StatefulWidget {
 }
 
 class _MyMainPageState extends State<MyMainPage> {
+  List array = [
+    'https://image.freepik.com/free-vector/tiny-people-testing-quality-assurance-software-isolated-flat-vector-illustration-cartoon-character-fixing-bugs-hardware-device-application-test-it-service-concept_74855-10172.jpg',
+    'https://image.freepik.com/free-vector/online-tutorials-concept_52683-37480.jpg',
+  ];
+  int counter1 = 0;
+  late Timer _timer;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        counter1 += 1;
+      });
+    });
+  }
+
+  Widget Mywidget() {
+    return (counter1 % 2 == 0)
+        ? Image.network(array[1])
+        : Image.network(array[0]);
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -72,8 +98,7 @@ class _MyMainPageState extends State<MyMainPage> {
               ),
               Container(
                 height: size.height / 3,
-                child: Image.network(
-                    'https://image.freepik.com/free-vector/computer-monitor-graphic-animator-creating-video-game-modeling-motion-processing-video-file-using-professional-editor-vector-illustration-graphic-design-art-designer-workplace-concept_74855-13038.jpg'),
+                child: Mywidget(),
               ),
               Column(
                 children: <Widget>[
@@ -108,6 +133,7 @@ class _MyMainPageState extends State<MyMainPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
+                      print(counter1);
                       Navigator.push(
                           context,
                           Transition(

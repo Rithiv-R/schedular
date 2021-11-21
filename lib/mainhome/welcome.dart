@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schedular/Timeview/Homestart.dart';
+import 'package:schedular/extra%20class/course_selection.dart';
 import 'package:schedular/extra%20class/extra1.dart';
 import 'package:schedular/main.dart';
-import 'package:schedular/requestmod/sreqmodel.dart';
 import 'package:schedular/substitute%20class.dart/sClass2.dart';
 import 'package:schedular/substitute%20faculty.dart/home.dart';
 import 'package:schedular/profile/facultyprofile.dart';
@@ -61,6 +62,7 @@ class _WelcomeState extends State<Welcome> {
         leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
+              FirebaseAuth.instance.signOut();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MyMainPage()));
             }),
@@ -132,7 +134,9 @@ class _WelcomeState extends State<Welcome> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Extra1()));
+                                    builder: (context) => Myselection(
+                                          user: widget.user,
+                                        )));
                           },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),
@@ -311,81 +315,6 @@ class _WelcomeState extends State<Welcome> {
                       ],
                       crossAxisCount: 2),
                 ),
-                FlatButton(
-                    onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection('students')
-                          .doc('20MIC0063')
-                          .set(({
-                            'name': 'ananya ghosh',
-                            'email': 'ananya.ghosh2020@gmail.com',
-                            'regno': '20MIC0063',
-                            'course': [
-                              'CSI1003',
-                              'MAT2001',
-                              'CSI1004',
-                              'CSI1002',
-                              'STS2021',
-                              'CSI3029',
-                              'CSI1001',
-                              'EEE1005',
-                              'HUM1025',
-                            ],
-                            'slots': [
-                              '1111',
-                              '1312',
-                              '1513',
-                              '1211',
-                              '1412',
-                              '1114',
-                              '2325',
-                              '2326',
-                              '1311',
-                              '1512',
-                              '1214',
-                              '1411',
-                              '1113',
-                              '2121',
-                              '2122',
-                              '1511',
-                              '1213',
-                              '1414',
-                              '1112',
-                              '1313',
-                              '2525',
-                              '2526',
-                              '1212',
-                              '1413',
-                              '2425',
-                              '2426',
-                              '1221',
-                              '1124',
-                              '1422',
-                              '1224',
-                              '2323',
-                              '2324',
-                            ],
-                            'CSI1003': ['1111', '1312', '1513'],
-                            'MAT2001': [
-                              '1211',
-                              '1412',
-                              '1114',
-                              '2325',
-                              '2326',
-                            ],
-                            'CSI1004': ['1311', '1512', '1214'],
-                            'CSI1002': ['1411', '1113', '2121', '2122'],
-                            'STS2021': ['1511', '1213', '1414'],
-                            'CSI3029': ['1112', '1313', '2525', '2526'],
-                            'CSI1001': ['1212', '1413', '2425', '2426'],
-                            'EEE1005': ['1221', '1124', '1422'],
-                            'HUM1025': ['1224', '2323', '2324'],
-                          }))
-                          .then((value) => print("User Added"))
-                          .catchError(
-                              (error) => print("Failed to add user: $error"));
-                    },
-                    child: Text('ADDER')),
               ],
             ),
           ))
