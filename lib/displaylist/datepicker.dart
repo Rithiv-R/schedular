@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:schedular/mainhome/welcome.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 
 class Datepick extends StatefulWidget {
+  var user;
   var finallist;
   var mainfac;
   var course;
@@ -13,7 +15,8 @@ class Datepick extends StatefulWidget {
   var fac_photo;
   var slotids;
   Datepick(
-      {required this.finallist,
+      {required this.user,
+      required this.finallist,
       required this.fac_id,
       required this.fac_name,
       required this.slotids,
@@ -127,9 +130,12 @@ class _DatepickState extends State<Datepick> {
               }
             });
           } else {
-            print('no');
+            dis1(context, 'You are not allowed to select on this date');
           }
-          Navigator.pop(context);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Welcome(user: widget.user)));
         },
         monthViewSettings: DateRangePickerMonthViewSettings(
           weekendDays: widget.finallist,
@@ -144,5 +150,36 @@ class _DatepickState extends State<Datepick> {
             DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
       ),
     );
+  }
+
+  void dis1(
+    BuildContext context,
+    String error,
+  ) {
+    var alertDialog = AlertDialog(
+        title: Text(
+          'ERROR!',
+          style: TextStyle(
+              color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        content: Text(error),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 }

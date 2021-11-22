@@ -754,6 +754,7 @@ class _MySlotState extends State<MySlot> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Same_Fac_lab(
+                            user: widget.user,
                             id: this.id,
                             id1: this.id1,
                             list: lab_same,
@@ -810,6 +811,7 @@ class _MySlotState extends State<MySlot> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Diff_Fac_lab(
+                            user: widget.user,
                             id: this.id,
                             id1: this.id1,
                             list: lab_diff,

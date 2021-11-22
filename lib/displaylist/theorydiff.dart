@@ -5,12 +5,14 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class Diff_Fac_Theory extends StatefulWidget {
   List<Theory_diff> list;
+  var user;
   var counter;
   var slot;
   var course;
   var id;
   var mainfac;
   Diff_Fac_Theory({
+    required this.user,
     required this.id,
     required this.mainfac,
     required this.list,
@@ -160,6 +162,7 @@ class _Diff_Fac_TheoryState extends State<Diff_Fac_Theory> {
                                                                                         fac_name: final_list[index].name,
                                                                                         fac_id: final_list[index].facid,
                                                                                         fac_photo: final_list[index].photo,
+                                                                                        user: widget.user,
                                                                                       )));
                                                                         },
                                                                         icon: Icon(

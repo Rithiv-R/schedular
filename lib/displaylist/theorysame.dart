@@ -5,12 +5,14 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class Same_Fac_Theory extends StatefulWidget {
   List<Theory_same> list;
+  var user;
   var counter;
   var slot;
   var course;
   var id;
   var mainfac;
   Same_Fac_Theory({
+    required this.user,
     required this.id,
     required this.mainfac,
     required this.list,
@@ -161,6 +163,7 @@ class _Same_Fac_TheoryState extends State<Same_Fac_Theory> {
                                                                                         fac_name: final_list[index].name,
                                                                                         fac_id: final_list[index].facid,
                                                                                         fac_photo: final_list[index].photo,
+                                                                                        user: widget.user,
                                                                                       )));
                                                                         },
                                                                         icon: Icon(

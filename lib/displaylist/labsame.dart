@@ -7,14 +7,15 @@ import 'package:share/share.dart';
 
 class Same_Fac_lab extends StatefulWidget {
   List<Lab_same> list;
+  var user;
   var counter;
   var slot;
   var course;
   var mainfac;
   var id;
   var id1;
-
   Same_Fac_lab({
+    required this.user,
     required this.id,
     required this.id1,
     required this.list,
@@ -144,6 +145,8 @@ class _Same_Fac_labState extends State<Same_Fac_lab> {
                                                                                 final_list[index].facid,
                                                                             fac_photo:
                                                                                 final_list[index].photo,
+                                                                            user:
+                                                                                widget.user,
                                                                           )));
                                                         },
                                                         icon: Icon(
