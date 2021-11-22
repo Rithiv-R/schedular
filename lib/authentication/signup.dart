@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:schedular/authentication/signin.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:schedular/mainhome/welcome.dart';
+import 'package:schedular/splash2.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -412,7 +413,7 @@ class _SignUpState extends State<SignUp> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Welcome(user: email)));
+                                                  SplashScreen1(user: email)));
                                     });
                                   } on FirebaseAuthException catch (e) {
                                     if (e.code == 'weak-password') {

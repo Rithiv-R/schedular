@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schedular/authentication/signup.dart';
 import 'package:schedular/mainhome/welcome.dart';
+import 'package:schedular/splash2.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -168,7 +169,7 @@ class _SignInState extends State<SignIn> {
                                   email: email, password: password)
                               .then((_) =>
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => Welcome(
+                                    builder: (context) => SplashScreen1(
                                       user: email,
                                     ),
                                   )));

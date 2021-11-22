@@ -368,22 +368,75 @@ class _Extra1State extends State<Extra2> {
                                 ],
                               ),
                             )
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: <Widget>[
-                                  Column(
+                          : Column(
+                              children: [
+                                Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg'),
+                                          fit: BoxFit.cover)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Timings(time),
-                                      TimeTable(slots1),
-                                      TimeTable(slots2),
-                                      TimeTable(slots3),
-                                      TimeTable(slots4),
-                                      TimeTable(slots5),
+                                      Padding(
+                                          padding: EdgeInsets.only(top: 10)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 20)),
+                                          MaterialButton(
+                                            elevation: 5,
+                                            height: 45,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            color: Colors.lightBlueAccent,
+                                            onPressed: () {
+                                              slotsof.forEach((element) {
+                                                if (!unique.contains(element)) {
+                                                  setState(() {
+                                                    free.add(element);
+                                                  });
+                                                }
+                                              });
+                                            },
+                                            child: Text(
+                                              'REFRESH',
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 30)),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Timings(time),
+                                          TimeTable(slots1),
+                                          TimeTable(slots2),
+                                          TimeTable(slots3),
+                                          TimeTable(slots4),
+                                          TimeTable(slots5),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                     ],
                   ),

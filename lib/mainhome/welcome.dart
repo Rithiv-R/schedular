@@ -5,6 +5,7 @@ import 'package:schedular/Timeview/Homestart.dart';
 import 'package:schedular/extra%20class/course_selection.dart';
 import 'package:schedular/extra%20class/extra1.dart';
 import 'package:schedular/main.dart';
+import 'package:schedular/substitute%20class.dart/course_selection.dart';
 import 'package:schedular/substitute%20class.dart/sClass2.dart';
 import 'package:schedular/substitute%20faculty.dart/home.dart';
 import 'package:schedular/profile/facultyprofile.dart';
@@ -206,7 +207,9 @@ class _WelcomeState extends State<Welcome> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SubClass2()));
+                                    builder: (context) => Myselection1(
+                                          user: widget.user,
+                                        )));
                           },
                           splashColor: Colors.black54,
                           borderRadius: BorderRadius.circular(15),

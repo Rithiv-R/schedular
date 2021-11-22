@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class Extra1 extends StatefulWidget {
+class Sub1 extends StatefulWidget {
   var id;
   var slot;
   var course;
-  Extra1({required this.id, required this.slot, required this.course});
+  Sub1({required this.id, required this.slot, required this.course});
   @override
   _Extra1State createState() => _Extra1State();
 }
 
-class _Extra1State extends State<Extra1> {
+class _Extra1State extends State<Sub1> {
   var students = [];
   var unique = [];
   var free = [];
@@ -304,7 +304,7 @@ class _Extra1State extends State<Extra1> {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30)),
         ),
-        title: Text('EXTRA CLASS'),
+        title: Text('SUBSTITUTE THEORY FREE SLOTS'),
       ),
       body: (students.isEmpty)
           ? Center(
