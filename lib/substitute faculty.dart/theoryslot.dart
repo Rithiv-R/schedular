@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:schedular/displaylist/theorydiff.dart';
 import 'package:schedular/main.dart';
-
 import '../displaylist/theorysame.dart';
 import 'models.dart';
 
